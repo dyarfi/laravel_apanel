@@ -40,7 +40,6 @@ class AuthAdminController extends Controller {
 		$this->admin_app	= $this->setting['admin_app'];
 
 		$this->admin_url	= $this->setting['admin_url'];
-
 		
 	}
 
