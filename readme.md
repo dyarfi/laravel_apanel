@@ -1,3 +1,7 @@
+## This is my Laravel Projects
+Uses sentinel auth
+
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
