@@ -43,7 +43,6 @@ class UsersController extends AuthorizedController {
 	public function index()
 	{
 
-
 	   	//dd ($this->users->find(1)->roles);
 
 		// Set return data 
@@ -55,7 +54,7 @@ class UsersController extends AuthorizedController {
 	   	// Set data to return
 	   	$data = ['users'=>$users,'deleted'=>$deleted,'junked'=>Input::get('path')];
 
-		return $this->view('admin.sentinel.users.index')->data($data)->title('Setting List - Laravel Apps'); ;
+	   	return $this->view('admin.sentinel.users.index')->data($data)->title('User List');
 	}	
 	
 	/**
@@ -154,12 +153,15 @@ class UsersController extends AuthorizedController {
 	{
 		if ($user = $this->users->find($id))
 		{
+			
+			// Add deleted_at and not completely delete
 			$user->delete();
-
+			
+			// Redirect with messages
 			return Redirect::to(route('admin.users.index'))->with('success', 'User Trashed!');
 		}
 
-		return Redirect::to(route('admin.users.index'));
+		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
 	}
 
 	/**
@@ -172,13 +174,15 @@ class UsersController extends AuthorizedController {
 	{
 		if ($user = $this->users->onlyTrashed()->find($id))
 		{
-			
+
+			// Restored back from deleted_at database
 			$user->restore();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.users.index'))->with('success', 'User Restored!');
 		}
 
-		return Redirect::to(route('admin.users.index'));
+		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
 	}
 	/**
 	 * Remove the specified user.
@@ -202,7 +206,7 @@ class UsersController extends AuthorizedController {
 			return Redirect::to(route('admin.users.index'))->with('success', 'User Permanently Deleted!');
 		}
 
-		return Redirect::to(route('admin.users.index'));
+		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
 	}
 
 	/**
@@ -229,7 +233,7 @@ class UsersController extends AuthorizedController {
 
 		$roles = $this->roles->lists('name', 'id');
 
-		return View::make('admin.sentinel.users.form', compact('mode', 'user', 'roles'));
+		return $this->view('admin.sentinel.users.form')->data(compact('mode', 'user', 'roles'))->title('User '.$mode);
 	}
 
 	/**
@@ -282,8 +286,6 @@ class UsersController extends AuthorizedController {
 		{
 			
 			$messages = $this->validateUser($input, $rules);
-
-			//dd ($input);
 
 			if ($messages->isEmpty())
 			{

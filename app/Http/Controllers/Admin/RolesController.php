@@ -52,9 +52,31 @@ class RolesController extends AuthorizedController {
 		$deleted = Role::onlyTrashed()->get()->count();
 
 		// Get trashed mode
-		$junked = Input::get('path');
+		$junked  = Input::get('path');
 
-		return View::make('admin.sentinel.roles.index', compact('roles','deleted','junked'));
+		return $this->view('admin.sentinel.roles.index')->data(compact('roles','deleted','junked'))->title('Roles Listing');
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		// Get data from database
+        $role = $this->roles->findOrFail($id);
+        
+        // Read ACL settings config for any permission access
+        $acl = config('setting.acl');
+	               	      
+		// Set data to return
+	   	$data = ['role'=>$role,'acl'=>$acl];
+
+	   	// Return data and view
+	   	return $this->view('admin.sentinel.roles.show')->data($data)->title('View Role'); 
+
 	}
 
 	/**
@@ -84,7 +106,7 @@ class RolesController extends AuthorizedController {
 	 * @return mixed
 	 */
 	public function edit($id)
-	{
+	{					
 		return $this->showForm('update', $id);
 	}
 
@@ -109,12 +131,15 @@ class RolesController extends AuthorizedController {
 	{
 		if ($role = Role::find($id))
 		{
+
+			// Add deleted_at and not completely delete
 			$role->delete();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.roles.index'))->with('success', 'Role Trashed!');
 		}
 
-		return Redirect::to(route('admin.roles.index'));
+		return Redirect::to(route('admin.roles.index'))->with('error', 'Role Not Found!');;
 	}
 
 	/**
@@ -127,13 +152,15 @@ class RolesController extends AuthorizedController {
 	{
 		if ($role = Role::onlyTrashed()->find($id))
 		{
-			
+
+			// Restored back from deleted_at database
 			$role->restore();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.roles.index'))->with('success', 'Role Restored!');
 		}
 
-		return Redirect::to(route('admin.roles.index'));
+		return Redirect::to(route('admin.roles.index'))->with('error', 'Role Not Found!');
 	}
 
 	/**
@@ -147,12 +174,15 @@ class RolesController extends AuthorizedController {
 		if ($role = Role::onlyTrashed()->find($id))
 		{
 
+			// Completely delete from database
 			$role->forceDelete();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.roles.index'))->with('success', 'Role Permanently Deleted!');
+
 		}
 
-		return Redirect::to(route('admin.roles.index'));
+		return Redirect::to(route('admin.roles.index'))->with('error', 'Role Not Found!');;
 	}
 
 	/**
@@ -176,7 +206,16 @@ class RolesController extends AuthorizedController {
 			$role = $this->roles;
 		}
 
-		return View::make('admin.sentinel.roles.form', compact('mode', 'role'));
+		
+		$role_access = config('setting.acl');
+		
+		$role = Sentinel::findRoleById($this->user->roles()->first()->id);
+
+		//dd (array_keys($role_access));
+
+		// dd ($role->hasAccess('tasks'));
+		
+		return $this->view('admin.sentinel.roles.form')->data(compact('mode', 'role'))->title('Roles '.$mode);
 	}
 
 	/**

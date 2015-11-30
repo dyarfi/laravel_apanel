@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <a href="{{ route('admin.settings') }}" class="btn btn-info btn-xs">Back to all settings</a>
+        <a href="{{ route('admin.settings.index') }}" class="btn btn-info btn-xs">Back to all settings</a>
         <a href="{{ route('admin.settings.edit', $setting->id) }}" class="btn btn-primary btn-xs">Edit setting</a>
     </div>
     <div class="col-md-6 text-right">

@@ -34,4 +34,14 @@
     </div>  
   <div class="space-6"></div>
   @endif
+  @if ($message = Session::get('error'))
+  <div class="space-6"></div>
+    <div class="col-lg-12">
+      <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert"><i class="fa fa-minus-square"></i></button>
+        <strong>Error :</strong> {{ $message }}
+      </div>
+    </div>  
+  <div class="space-6"></div>
+  @endif
 </div>      

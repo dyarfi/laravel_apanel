@@ -54,7 +54,7 @@
                   @foreach ($values as $b => $key_access)
                       @foreach ($key_access as $tmp_access => $tmp)
                         @foreach (current($tmp)['action'] as $access)                                   
-                           <li class="{{ str_contains(Route::getCurrentRoute()->getName(), $access) ? 'active' : '' }}">
+                           <li class="{{ str_contains($access, Request::segment(2)) || str_contains(Route::getCurrentRoute()->getName(), $access) ? 'active' : '' }}">
                             <a href="{{ route("admin.{$access}") }}">
                               <i class="menu-icon fa fa-caret-right"></i>{{ key($tmp) }}<!--b class="arrow fa fa-user"></b-->
                             </a>

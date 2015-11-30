@@ -2,7 +2,6 @@
 
 {{-- Page content --}}
 @section('body')
-
 <div class="page-header">
 	<h1>Roles <span class="pull-right"><a href="{{ URL::to('apanel/roles/create') }}" class="btn btn-warning">Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
 </div>

@@ -45,7 +45,15 @@
 					{!! Form::label('', 'No Admin Access',['class'=>'text-danger']); !!}
 				</span>
 			</div>
-		</div>		
+		</div>	
+		@foreach ($role->permissions as $permission => $val)
+			@if(Auth::hasAccess('admin') && $permission == 'admin')
+				{!! Form::checkbox('permission[]', $val, $val ? true : false, ['disabled']) !!}
+			@else			
+				{!! Form::checkbox('permission[]', $val, $val ? true : false) !!}	
+			@endif
+			{!! Form::label('permission[]', ucfirst($permission)) !!}
+		@endforeach
 		<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
 	</div>
 

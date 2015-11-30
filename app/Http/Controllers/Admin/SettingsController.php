@@ -51,7 +51,7 @@ class SettingsController extends AuthorizedController {
 	   	$data = ['settings'=>$settings,'deleted'=>$deleted,'junked'=>Input::get('path')];
 		
 		// Return data and view
-	   	return $this->view('admin.sentinel.settings.index')->data($data)->title('Setting List - Laravel Apps'); 
+	   	return $this->view('admin.sentinel.settings.index')->data($data)->title('Setting List'); 
 	}
 
 	/**
@@ -125,12 +125,14 @@ class SettingsController extends AuthorizedController {
 	{
 		if ($setting = $this->settings->find($id))
 		{
+			// Add deleted_at and not completely delete
 			$setting->delete();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.settings.index'))->with('success', 'Setting Trashed!');
 		}
 
-		return Redirect::to(route('admin.settings.index'));
+		return Redirect::to(route('admin.settings.index'))->with('error', 'Setting Not Found!');
 	}
 
 	/**
@@ -144,12 +146,14 @@ class SettingsController extends AuthorizedController {
 		if ($setting = $this->settings->onlyTrashed()->find($id))
 		{
 			
+			// Restored back from deleted_at database
 			$setting->restore();
-
+			
+			// Redirect with messages
 			return Redirect::to(route('admin.settings.index'))->with('success', 'Setting Restored!');
 		}
 
-		return Redirect::to(route('admin.settings.index'));
+		return Redirect::to(route('admin.settings.index'))->with('error', 'Setting Not Found!');;
 	}
 
 	/**
@@ -163,12 +167,14 @@ class SettingsController extends AuthorizedController {
 		if ($setting = $this->settings->onlyTrashed()->find($id))
 		{
 
+			// Completely delete from database
 			$setting->forceDelete();
 
+			// Redirect with messages
 			return Redirect::to(route('admin.settings.index'))->with('success', 'Setting Permanently Deleted!');
 		}
 
-		return Redirect::to(route('admin.settings.index'));
+		return Redirect::to(route('admin.settings.index'))->with('error', 'Setting Not Found!');
 	}
 
 	/**
@@ -193,7 +199,7 @@ class SettingsController extends AuthorizedController {
 			$setting = $this->settings;
 		}
 
-		return View::make('admin.sentinel.settings.form', compact('mode', 'setting'));
+		return $this->view('admin.sentinel.settings.form')->data(compact('mode', 'setting'))->title('Setting '.$mode);
 	}
 
 	/**
