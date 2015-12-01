@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreatePagesTable' => $baseDir . '/database/migrations/2015_12_01_223306_create_pages_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/migrations.bak/2014_10_12_100000_create_password_resets_table.php',
     'CreateSettings' => $baseDir . '/database/migrations/2015_11_24_123325_create_settings.php',
     'CreateTasksTable' => $baseDir . '/database/migrations/migrations.bak/2015_10_26_155821_create_tasks_table.php',
@@ -16,7 +17,7 @@ return array(
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
-    'MigrationCartalystSentinel' => $baseDir . '/database/migrations/2015_11_24_124648_migration_cartalyst_sentinel.php',
+    'MigrationCartalystSentinel' => $baseDir . '/database/migrations/2015_11_24_142038_migration_cartalyst_sentinel.php',
     'PHPUnit_Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
     'PHPUnit_Extensions_GroupTestSuite' => $vendorDir . '/phpunit/phpunit/src/Extensions/GroupTestSuite.php',
     'PHPUnit_Extensions_PhptTestCase' => $vendorDir . '/phpunit/phpunit/src/Extensions/PhptTestCase.php',

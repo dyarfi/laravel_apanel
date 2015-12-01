@@ -96,6 +96,18 @@ return [
 							]
 						],
 					]
+				],
+				// Tasks modules will be in the directory in Http
+				['Task' => [
+						//------ Tasks controller
+						['Tasks' => [
+								// Action for first index
+								'action' => ['tasks.index'],
+								// Controller method list
+								'method' => ['tasks.index','tasks.edit','tasks.update','tasks.create','tasks.store','tasks.show','tasks.dashboard'],
+							]
+						]
+					]
 				]	
 			 ]
 ];

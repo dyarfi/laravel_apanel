@@ -317,12 +317,12 @@
           var $form  = $(this).parents('div.checkbox-handler');
           var $label = $(this).next('label');
           if( $(this).is(':checked')) {
-              $form.find('input[class="checked"]').prop('checked',true);
-              $form.find('input[class="checked"]').attr('value',true);
+              $form.find('input[class="checked"]:not(:disabled)').prop('checked',true);
+              $form.find('input[class="checked"]:not(:disabled)').attr('value',true);
               $label.text('Unchecked All');
           } else {
-              $form.find('input[class="checked"]').prop('checked',false);
-              $form.find('input[class="checked"]').attr('value',false);
+              $form.find('input[class="checked"]:not(:disabled)').prop('checked',false);
+              $form.find('input[class="checked"]:not(:disabled)').attr('value',false);
               $label.text('Check All');
           }
         });

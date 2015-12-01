@@ -27,7 +27,8 @@ class AuthorizedController extends BaseAdmin {
 		$this->user = Sentinel::getUser();
 
 		//dd ( $this->user->roles() );
-		
+		//dd ($this->user->roles()->first()->permissions);
+
 	}
 
 	public function unauthorized () {

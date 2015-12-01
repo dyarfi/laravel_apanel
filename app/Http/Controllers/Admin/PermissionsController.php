@@ -32,7 +32,7 @@ class PermissionsController extends AuthorizedController {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin');
 
-		$this->permissions = User::all();
+		$this->permissions = Sentinel::getRoleRepository();
 	}
 
 	/**
@@ -43,7 +43,7 @@ class PermissionsController extends AuthorizedController {
 	public function index()
 	{
 		
-		$permissions = User::all();
+		$permissions = Role::all();
 		
 		$permissions->each(function($value) {
 			$value->permissions = json_decode($value->permissions,true);
@@ -55,30 +55,89 @@ class PermissionsController extends AuthorizedController {
 
 
 	public function change($id=null) {
-
-		// Get user model
-	    $user = User::find($id);
 		
-	    //dd(Request::input('access_permission'));
+		// Default variable checking
+		$updated = false;	    
 
 	    // Check if requested contain 'access_permission'
-		if (Request::has('access_permission')) {
+		if (Request::has('user_form')) {
+						
+			// Get user model
+	    	$user = Sentinel::getUserRepository()->findById($id);		
 
-			// Get request input and convert to json
-			$request = json_encode(Request::input('access_permission'));
-			// Replace the string "true" into true
-			$user->permissions = str_replace(':"true"',':true',$request);
+			// Check if value posted is not empty and array valued
+			if (is_array(Request::input('access_permission'))) {
+
+				// Reset database column
+				unset($user->permissions);
+
+				// Set Role Permissions
+				foreach (Request::input('access_permission') as $permission => $value) {
+					$user->updatePermission($permission, ($value) ? true : false, true)->save();
+				}
+
+			} else {
+
+				// Set empty permission
+				unset($user->permissions);
+
+				// Save user data
+				$user->save();
+
+			}
+
+
+			// Saved checking
+			$updated = true;
+
+		} else 
+		// Check if requested contain 'access_permission'
+		if (Request::has('role_form')) {
+
+			// Get user model
+	    	$role = Sentinel::findRoleById($id);
+		
+			// Check if value posted is not empty and array valued
+			if (is_array(Request::input('role_permission'))) {
+				
+				// Reset database column
+				unset($role->permissions);
+
+				// Set Role Permissions
+				foreach (Request::input('role_permission') as $permission => $value) {
+					$role->updatePermission($permission, ($value) ? true : false, true)->save();
+				}
+
+			} else {
+
+				// Set empty permission
+				unset($role->permissions);
+
+				// Save role data
+				$role->save();
+
+			}
+
+			// Saved checking
+			$updated = true;
 
 		} else {
 
-			$user->permissions = '';
+			// Saved checking
+			$updated = false;
 
 		}
-	
-		// Save user data
-		$user->save();
 
-		return response()->json(['status'=>'200','message'=>'Update Successfull!']);
+		if ($updated) {
+
+			return response()->json(['status'=>'200','message'=>'Update Successfull!']);			
+
+		} else {
+
+			return response()->json(['status'=>'200','message'=>'Update Failed!']);
+
+		}
+
 
 	}
 
@@ -151,11 +210,14 @@ class PermissionsController extends AuthorizedController {
 	 */
 	protected function showForm($mode, $id = null)
 	{
+
+		$access = Input::get('access');
+
 		if ($id)
 		{
-			if ( ! $role = $this->permissions->find($id))
+			if ( ! $role = $this->permissions->findOrFail($id))
 			{
-				return Redirect::to('permissions');
+				return Redirect::to('admin.permissions.index');
 			}
 		}
 		else
@@ -163,7 +225,10 @@ class PermissionsController extends AuthorizedController {
 			$role = $this->permissions;
 		}
 
-		return View::make('admin.sentinel.permissions.form', compact('mode', 'role'));
+		// Read ACL settings config for any permission access
+    	$acl = config('setting.acl');
+	               	      
+		return $this->view('admin.sentinel.permissions.'.$access.'_form')->data(compact('mode','role','acl'))->title(ucfirst($access).' Permission');
 	}
 
 	/**

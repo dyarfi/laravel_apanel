@@ -161,6 +161,18 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('menus/{id}/restored', ['as'=>'admin.menus.restored','uses'=>'Admin\MenusController@restored']);
     Route::get('menus/{id}/delete', ['as'=>'admin.menus.delete','uses'=>'Admin\MenusController@delete']);
 
+
+    // Pages Controller routes
+    Route::get('tasks', ['as'=>'admin.tasks.index','uses'=>'Admin\TasksController@index']);
+    Route::get('tasks/create', ['as'=>'admin.tasks.create','uses'=>'Admin\TasksController@create']);
+    Route::post('tasks/create', ['as'=>'admin.tasks.store','uses'=>'Admin\TasksController@store']);
+    Route::get('tasks/{id}/show', ['as'=>'admin.tasks.show', 'uses'=>'Admin\TasksController@show']);
+    Route::get('tasks/{id}', ['as'=>'admin.tasks.edit','uses'=>'Admin\TasksController@edit']);
+    Route::post('tasks/{id}', ['as'=>'admin.tasks.update','uses'=>'Admin\TasksController@update']);
+    Route::get('tasks/{id}/trash', ['as'=>'admin.tasks.trash','uses'=>'Admin\TasksController@trash']);    
+    Route::get('tasks/{id}/restored', ['as'=>'admin.tasks.restored','uses'=>'Admin\TasksController@restored']);
+    Route::get('tasks/{id}/delete', ['as'=>'admin.tasks.delete','uses'=>'Admin\TasksController@delete']);
+
 });
 // ******************* Admin Routes ********************* } //
 

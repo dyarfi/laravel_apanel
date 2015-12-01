@@ -22,6 +22,7 @@
         <div class="container-fluid">
             <div class="col-lg-8">
             {!! Form::open(['route'=>['admin.permissions.change',$user->id],'method'=>'POST','class'=>'form-horizontal','role'=>'form','id'=>'permissions_update']) !!}
+            {!! Form::hidden('user_form',csrf_token()) !!}
             <ul class="list-unstyled">
 
             @foreach ($acl as $key => $values)                

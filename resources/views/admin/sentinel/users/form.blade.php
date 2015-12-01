@@ -37,7 +37,7 @@
 
 	<div class="form-group{{ $errors->first('role_id', ' has-error') }}">
 		<label for="role_id">Roles</label>		
-		{!! Form::select('role_id', $roles, Input::old('role_id', @$user->roles()->first()->id)); !!}
+		{!! Form::select('role_id', $roles, Input::get('role_id') ? Input::get('role_id') : Input::old('role_id', @$user->roles()->first()->id)); !!}
 		<span class="help-block">{{{ $errors->first('role_id', ':message') }}}</span>
 	</div>
 

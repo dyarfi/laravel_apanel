@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model {
+class Page extends Model {
 
     // Soft deleting a model, it is not actually removed from your database.
     use SoftDeletes;
@@ -13,7 +13,7 @@ class Role extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'roles';
+	protected $table = 'pages';
 
 	/**
      * Fillable fields
@@ -33,7 +33,7 @@ class Role extends Model {
     public function users()
     {
         //$this->belongsToMany('App\Role', 'user_roles', 'user_id', 'foo_id');
-        return $this->belongsToMany('Tasks\Db\User','role_users', 'role_id', 'user_id');
+        //return $this->belongsToMany('Tasks\Db\User','role_users', 'role_id', 'user_id');
     }
 
 }
