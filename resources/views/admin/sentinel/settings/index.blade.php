@@ -4,7 +4,7 @@
 @section('body')
 
 <div class="page-header">
-	<h1>Settings <span class="pull-right"><a href="{{ route('admin.settings.create') }}" class="btn btn-warning">Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
+	<h1>Settings <span class="pull-right"><a href="{{ route('admin.settings.create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
 </div>
 @if($deleted)
 <div class="pull-right">
@@ -13,9 +13,6 @@
 @endif
 @if ($settings->count())
 <small class="grey">@if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif</small>
-<div class="pull-right">
-	{!! $settings->render() !!}
-</div>
 <br><br>
 <div class="row">
 	<div class="col-xs-12">		
@@ -70,6 +67,7 @@
 	{!! $settings->render() !!}
 </div>
 @else
+<br><br>
 <div class="well">
 	Nothing to show here.
 </div>

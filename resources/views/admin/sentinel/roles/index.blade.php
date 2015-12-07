@@ -3,7 +3,7 @@
 {{-- Page content --}}
 @section('body')
 <div class="page-header">
-	<h1>Roles <span class="pull-right"><a href="{{ URL::to('apanel/roles/create') }}" class="btn btn-warning">Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
+	<h1>Roles <span class="pull-right"><a href="{{ URL::to('apanel/roles/create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
 </div>
 @if($deleted)
 <div class="pull-right">
@@ -12,12 +12,7 @@
 @endif
 @if ($roles->count())
 <small class="grey">@if ($roles->count()) Page {{ @$roles->currentPage() }} of {{ @$roles->lastPage() }} @endif</small>
-<div class="pull-right">
-	{!! $roles->render() !!}
-</div>
-
 <br><br>
-
 <table class="table table-bordered table-hover">
 	<thead>
 		<th class="col-lg-3">Name</th>
@@ -68,10 +63,9 @@
 	{!! $roles->render() !!}
 </div>
 @else
+<br><br>
 <div class="well">
-
 	Nothing to show here.
-
 </div>
 @endif
 

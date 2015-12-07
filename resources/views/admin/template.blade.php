@@ -175,7 +175,7 @@
               </div><!-- /.ace-settings-box -->
             </div><!-- /.ace-settings-container -->
 
-            <div class="page-header">
+            <!--div class="page-header">
               <h1>
                 {{ $admin_app }}
                 <small>
@@ -183,7 +183,9 @@
                   overview &amp; stats
                 </small>
               </h1>
-            </div><!-- /.page-header -->
+            </div--><!-- /.page-header -->
+
+            <div class="space-16"></div>
 
             <div class="row">
               <div class="col-xs-12">

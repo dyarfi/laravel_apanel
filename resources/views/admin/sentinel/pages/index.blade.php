@@ -3,7 +3,7 @@
 {{-- Page content --}}
 @section('body')
 <div class="page-header">
-	<h1>Pages <span class="pull-right"><a href="{{ URL::to('apanel/pages/create') }}" class="btn btn-warning">Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
+	<h1>Pages <span class="pull-right"><a href="{{ URL::to('apanel/pages/create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
 </div>
 @if($deleted)
 <div class="pull-right">
@@ -68,10 +68,9 @@
 	{!! $pages->render() !!}
 </div>
 @else
+<br><br>
 <div class="well">
-
 	Nothing to show here.
-
 </div>
 @endif
 

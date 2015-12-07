@@ -32,7 +32,8 @@ class PermissionsController extends AuthorizedController {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin');
 
-		$this->permissions = Sentinel::getRoleRepository();
+		$this->permissions  = Sentinel::getRoleRepository();
+		$this->users 		= Sentinel::getUserRepository();
 	}
 
 	/**
@@ -213,22 +214,37 @@ class PermissionsController extends AuthorizedController {
 
 		$access = Input::get('access');
 
-		if ($id)
-		{
-			if ( ! $role = $this->permissions->findOrFail($id))
-			{
+		if ($id && $access == 'role') {
+
+			if ( ! $role = $this->permissions->findOrFail($id)) {
+				
 				return Redirect::to('admin.permissions.index');
+				
 			}
+
+		} else if ($id && $access == 'user') {
+
+			if ( ! $user = User::findOrFail($id)) {
+
+				return Redirect::to('admin.permissions.index');
+
+			}
+
+	        // Change permissions data to array 
+	        $user->permissions = json_decode($user->permissions, true);
+
 		}
-		else
-		{
+		else {
+			
+			// Role data default
 			$role = $this->permissions;
+
 		}
 
 		// Read ACL settings config for any permission access
     	$acl = config('setting.acl');
 	               	      
-		return $this->view('admin.sentinel.permissions.'.$access.'_form')->data(compact('mode','role','acl'))->title(ucfirst($access).' Permission');
+		return $this->view('admin.sentinel.permissions.'.$access.'_form')->data(compact('mode','role','acl','user'))->title(ucfirst($access).' Permission');
 	}
 
 	/**
