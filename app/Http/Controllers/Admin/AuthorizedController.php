@@ -153,7 +153,7 @@ class AuthorizedController extends BaseAdmin {
 		if ($message) {
 			// Flash a key / value pair to the session
 	 		//Session::flash('success', $message .' '. $exitCode > 0 ? '- '. $exitCode .' migration' : 'But no migration');
-	 		Session::flash('success', $message .' '. $exitCode);		
+	 		Session::flash('success', $message);		
 		}
  		// Forget the message
  		//Session::forget('success');
