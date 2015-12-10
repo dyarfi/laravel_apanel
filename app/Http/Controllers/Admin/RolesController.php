@@ -205,17 +205,10 @@ class RolesController extends AuthorizedController {
 		{
 			$role = $this->roles;
 		}
-
 		
-		$role_access = config('setting.acl');
+		$acl = config('setting.acl');
 		
-		$role = Sentinel::findRoleById($this->user->roles()->first()->id);
-
-		//dd (array_keys($role_access));
-
-		// dd ($role->hasAccess('tasks'));
-		
-		return $this->view('admin.sentinel.roles.form')->data(compact('mode', 'role'))->title('Roles '.$mode);
+		return $this->view('admin.sentinel.roles.form')->data(compact('mode', 'role', 'acl'))->title('Roles '.$mode);
 	}
 
 	/**

@@ -16,7 +16,9 @@
         </li> 
     </ul>
     <h4 class="red">Permission</h4>
+    <span class="label label-warning"><span class="fa fa-key"></span> {!! link_to('#', 'Access Permission', ['class'=>'white','onclick'=>'$(".hide_box").toggleClass("hide");']) !!}</span>
     <!-- this should be remove if you choice is to show non accessible controller -->
+    <div class="hide_box hide">
     @if ($user->roles->first())
     <?php /* @if ($user->permissions) */ ?>
         <div class="container-fluid">
@@ -91,6 +93,7 @@
     @else 
         <span class="label label-danger label-sm">No Access</span>       
     @endif
+    </div>
     <p class="lead">
         {{ $user->about }}
     </p>
