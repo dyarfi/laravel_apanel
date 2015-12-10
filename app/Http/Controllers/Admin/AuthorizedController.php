@@ -118,6 +118,7 @@ class AuthorizedController extends BaseAdmin {
 						$role = Sentinel::getRoleRepository()->createModel()->create([
 						    'name' => 'Admin',
 						    'slug' => 'admin',
+						    'permissions' => ['admin' => true]
 						]);
 					}
 
