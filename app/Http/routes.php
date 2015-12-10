@@ -54,6 +54,12 @@ View::share('company_name', $setting['company_name']);
  */
 Route::group(['prefix' => $setting['admin_url']], function()
 {
+    // ******************* Shortcut for Developer Setup ******************** //
+
+    // Get main administrator lgin
+    Route::get('setup/first/migrate', 'Admin\AuthorizedController@setup'); 
+    Route::post('setup/first/migrate', 'Admin\AuthorizedController@setup');    
+
 
     // ******************* Auth\AuthAdminController ********************* { //
 

@@ -109,7 +109,7 @@ abstract class Controller extends BaseController {
 	*/
 	 protected function title($title)
 	 {
-		$this->title = $title;
+		 $this->title = $title;
 	 
 		 // title method must be called last so it can call the render method
 		 // this allows us to skip calling the render method
@@ -122,7 +122,7 @@ abstract class Controller extends BaseController {
 	*/
 	 private function rendersubview()
 	 {
-		$this->subview = array('subview' => View::make($this->subview)->with($this->subdata));
+		 $this->subview = array('subview' => View::make($this->subview)->with($this->subdata));
 	 
 		 // append subview data to view data
 		 return $this->data = $this->data + $this->subview;

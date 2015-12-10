@@ -42,16 +42,24 @@ class SettingsController extends AuthorizedController {
 	public function index() {
 
 		// Set return data 
-	   	$settings = Input::get('path') === 'trashed' ? $this->settings->onlyTrashed()->paginate(4) : $this->settings->paginate(4);
+	   	$settings = Input::get('path') === 'trashed' ? $this->settings->onlyTrashed()->get() : $this->settings->get();
 
 	   	// Get deleted count
-		$deleted = $this->settings->onlyTrashed()->get()->count();
-	   	
-	   	// Set data to return
-	   	$data = ['settings'=>$settings,'deleted'=>$deleted,'junked'=>Input::get('path')];
+		$deleted = $this->settings->onlyTrashed()->get()->count();		   
 		
+	   	// Set data to return
+	   	$data = ['settings' => $settings,'deleted' => $deleted,'junked' => Input::get('path')];
+
+	   	// Load needed scripts
+	   	$scripts = [
+	   				'dataTables'=> 'assets.admin/js/jquery.dataTables.min.js',
+	   				'dataTableBootstrap'=> 'assets.admin/js/jquery.dataTables.bootstrap.min.js',
+	   				'dataTableTools'=> 'assets.admin/js/dataTables.tableTools.min.js',
+	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js'
+	   				];
+	   	
 		// Return data and view
-	   	return $this->view('admin.sentinel.settings.index')->data($data)->title('Setting List'); 
+	   	return $this->view('admin.sentinel.settings.index')->data($data)->scripts($scripts)->title('Setting List'); 
 	}
 
 	/**

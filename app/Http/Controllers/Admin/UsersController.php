@@ -341,8 +341,15 @@ class UsersController extends AuthorizedController {
 	   	// Set data to return
 	   	$data = ['user'=>$user];
 
+	   	$scripts = ['easypiechart'=>'assets.admin/js/jquery.easypiechart.min.js',
+    				'sparkline' => 'assets.admin/js/jquery.sparkline.min.js',
+    				'jqueryflot' => 'assets.admin/js/jquery.flot.min.js',
+    				'jqueryflotpie'=>'assets.admin/js/jquery.flot.pie.min.js',
+    				'jqueryflotresize'=>'assets.admin/js/jquery.flot.resize.min.js'];
+
+
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->title('User Profile - Laravel Users'); 
+	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->scripts($scripts)->title('User Profile - Laravel Users'); 
 	}
 
 }

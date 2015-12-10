@@ -12,24 +12,39 @@
 </div>
 @endif
 @if ($settings->count())
-<small class="grey">@if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif</small>
+<small class="grey">{{-- @if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif --}}</small>
 <br><br>
 <div class="row">
 	<div class="col-xs-12">		
+		<div class="clearfix">
+			<div class="pull-right tableTools-container"></div>
+		</div>
 		{!! Form::open(['route'=>'admin.settings.index']) !!}
-		<table class="table table-bordered table-hover">
+		<div>
+		<table id="dynamic-table" class="table table-bordered table-hover">
 			<thead>
-				<th class="col-lg-3">Name</th>
-				<th class="col-lg-3">Description</th>
-				<th class="col-lg-3">Value</th>
-				<th class="col-lg-6">Actions</th>
+				<tr>
+					<th class="center"><label class="pos-rel"><input type="checkbox" class="ace" /><span class="lbl"></span></label></th>
+					<th class="col-lg-2">Name</th>
+					<th class="col-lg-3">Description</th>
+					<th class="col-lg-3">Value</th>
+					<th class="col-lg-2">Created At</th>				
+					<th class="col-lg-6 col-xs-3">Actions</th>
+				</tr>
 			</thead>
 			<tbody>
 				@foreach ($settings as $setting)
 				<tr class="{{ $setting->deleted_at ? ' bg-warning' :'' }}">
+					<td class="center">
+						<label class="pos-rel">
+							<input type="checkbox" class="ace" />
+							<span class="lbl"></span>
+						</label>
+					</td>
 					<td>{{ $setting->name }}</td>					
 					<td>{{ str_limit($setting->description, 30, '...') }}</td>					
 					<td>{{ $setting->value }}</td>
+					<td>{{ $setting->created_at }}</td>					
 					<td>
 						<div class="btn-group">
 							@if (!$setting->deleted_at)
@@ -59,12 +74,13 @@
 				@endforeach
 			</tbody>
 		</table>
+		</div>
 		{!! Form::close() !!}
 	</div>
 </div>
-<small class="grey">@if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif</small>
+<small class="grey">{{--@if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif--}}</small>
 <div class="pull-right">
-	{!! $settings->render() !!}
+{{--	{!! $settings->render() !!}  --}}
 </div>
 @else
 <br><br>
