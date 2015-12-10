@@ -60,7 +60,7 @@ class AuthAdminController extends Controller {
 	 */
 	public function login()
 	{
-		return View::make('admin.sentinel.login');
+		return View::make('admin.sentinel.login',['title'=>'Login Page']);
 	}
 
 	/**

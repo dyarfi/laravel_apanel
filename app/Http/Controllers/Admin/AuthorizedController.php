@@ -87,13 +87,43 @@ class AuthorizedController extends BaseAdmin {
 
 			// Check user
 			if (!$user_check) {
+				
 
+				$set_acl = [];
+
+				foreach (config('setting.acl') as $acl) {
+					if (isset($acl['Admin'])) {
+						$set_acl = array_flatten($acl['Admin']);
+					}	
+				}
+
+				$set_acl = array_fill_keys($set_acl,true);
+
+				$is_admin = Request::input('is_admin') == 1 ? $set_acl : [];
+				
 				$credentials = [
 				    'email'    => Request::input('email'),
 				    'password' => Request::input('password'),
+				    'permissions' => $is_admin,
 				];
 
 				$user = Sentinel::create($credentials);
+
+				if ($is_admin) {
+
+					$role = Sentinel::findRoleByName('Admin');
+
+					if (!$role) {
+
+						$role = Sentinel::getRoleRepository()->createModel()->create([
+						    'name' => 'Admin',
+						    'slug' => 'admin',
+						]);
+					}
+
+					$role->users()->attach($user);
+
+				}
 
 			} else {
 
@@ -109,6 +139,7 @@ class AuthorizedController extends BaseAdmin {
 
 			if (Request::input('migrate') == 1) {
 
+				// Call php artisan command
 				$exitCode = Artisan::call('migrate');
 
 			}
@@ -117,15 +148,20 @@ class AuthorizedController extends BaseAdmin {
 		}
 
 		//$message = ($exitCode == 0) ? '' : $exitCode . 'Migrate Successfully!';
-		
-		//dd ($message);
-		//redirect()->with('success', $message);
 
-		// Flash a key / value pair to the session
- 		Session::flash('success', $message);
+		if ($message) {
+			// Flash a key / value pair to the session
+	 		//Session::flash('success', $message .' '. $exitCode > 0 ? '- '. $exitCode .' migration' : 'But no migration');
+	 		Session::flash('success', $message .' '. $exitCode);		
+		}
+ 		// Forget the message
+ 		//Session::forget('success');
+
+ 		 // Set layout template
+ 		$this->layout = 'admin.template_login';
 
 		// Return no access view
-		return View::make('admin.sentinel.account.first_time');
+		return $this->view('admin.sentinel.account.first_time')->title('First Setup and Migrate!');
 
 	}
 

@@ -15,7 +15,7 @@ First Setup
 			<div class="clearfix">
 				<h3>
 					First setup
-					<small>Select for migrate</small>
+					<small>Options for migrate</small>
 				</h3>
 				<div class="list-group">
 					{!! Form::open() !!}	
@@ -30,6 +30,9 @@ First Setup
 						<div class="col-md-12">	
 							{!! Form::label('migrate','Migrate ?') !!}
 							{!! Form::checkbox('migrate',1) !!}						
+
+							{!! Form::label('is_admin','Is Admin ?') !!}
+							{!! Form::checkbox('is_admin',1) !!}						
 						</div>
 						<div class="col-md-12">	
 							{!! Form::submit('Setup !',['class'=>'btn btn-default btn-lg']) !!}
