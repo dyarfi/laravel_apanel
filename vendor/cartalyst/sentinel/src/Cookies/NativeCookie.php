@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Sentinel
- * @version    2.0.7
+ * @version    2.0.8
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -97,7 +97,7 @@ class NativeCookie implements CookieInterface
             $value = $_COOKIE[$this->options['name']];
 
             if ($value) {
-                return unserialize($value);
+                return json_decode($value);
             }
         }
     }
@@ -117,7 +117,7 @@ class NativeCookie implements CookieInterface
     {
         setcookie(
             $this->options['name'],
-            serialize($value),
+            json_encode($value),
             $lifetime,
             $path ?: $this->options['path'],
             $domain ?: $this->options['domain'],

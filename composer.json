@@ -19,7 +19,7 @@
 			"database"
 		],
 		"psr-4": {
-			"Tasks\\": "app/"
+			"App\\": "app/"
 		}
 	},
 	"autoload-dev": {

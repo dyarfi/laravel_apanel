@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

@@ -1,10 +1,10 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Request, Session, Input, URL, View, Route;
+use Request, Session, Input, URL, View;
 
 abstract class BaseAdmin extends BaseController {
 
@@ -176,15 +176,16 @@ abstract class BaseAdmin extends BaseController {
 	*/
 	 private function render()
 	 {
-		 // render subview if subview is passed
-		 (is_null($this->subview)) ? : $this->rendersubview();
-		 
-		 // render the view
-		 return View::make($this->layout)
-		 ->nest('content', $this->view, $this->data)
-		 ->with('scripts', $this->scripts)
-		 ->with('styles', $this->styles)		 
-		 ->with('title', $this->title);
+		// render subview if subview is passed
+		(is_null($this->subview)) ? : $this->rendersubview();
+		
+		// render the view
+		return View::make($this->layout)
+		->nest('content', $this->view, $this->data)
+		->with('scripts', $this->scripts)
+		->with('styles', $this->styles)
+		->with('title', $this->title)
+		;
 	 }
 
 }

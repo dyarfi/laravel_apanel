@@ -24,9 +24,9 @@
 		@foreach ($roles as $role)
 		<tr class="{{ $role->deleted_at ? ' bg-warning' :'' }}">
 			<td>{{ $role->name }}</td>
-			<td>{{ $role->slug }}</td>			
-			<td>{!! str_contains($role->permissions,'"admin":true') 
-				? '<span class="label label-success arrowed-in arrowed-in-right"><span class="fa fa-user fa-sm"></span> Superadmin</span>' 
+			<td>{{ $role->slug }}
+			</td>			
+			<td>{!! (!empty($role->permissions['admin']) && $role->permissions['admin'] === true) ? '<span class="label label-success arrowed-in arrowed-in-right"><span class="fa fa-user fa-sm"></span> Superadmin</span>' 
 				: '<span class="label label-danger arrowed-in arrowed-in-right"><span class="fa fa-ban fa-sm"></span> General</span>' !!}</td>
 			<td>
 				<div class="btn-group">

@@ -1,13 +1,13 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Session, Redirect, Input, Validator, View;
 // Load Sentinel and Socialite classes
 use Sentinel, Socialite;
 // Load other classes
-use Tasks\Http\Controllers\Admin\BaseAdmin;
+use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
-use Tasks\Db\Role;
+use App\Db\Role;
 
 class RolesController extends AuthorizedController {
 
@@ -54,7 +54,7 @@ class RolesController extends AuthorizedController {
 		// Get trashed mode
 		$junked  = Input::get('path');
 
-		return $this->view('admin.sentinel.roles.index')->data(compact('roles','deleted','junked'))->title('Roles Listing');
+		return $this->view('admin.sentinel.roles.index')->data(compact('roles','deleted','junked'))->title('Role Listing');
 	}
 
 	/**
@@ -203,7 +203,8 @@ class RolesController extends AuthorizedController {
 		}
 		else
 		{
-			$role = $this->roles;
+			//$role = $this->roles;
+			$role = Role::find($id);
 		}
 		
 		$acl = config('setting.acl');

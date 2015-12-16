@@ -1,9 +1,9 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Request, Input, Validator, Redirect, Session;
 // Load main models
-use Tasks\Db\Task;
+use App\Db\Task, App\Db\User;
 
 class TasksController extends AuthorizedController {
 
@@ -32,24 +32,24 @@ class TasksController extends AuthorizedController {
 	{
 
 		//$roles = $this->roles->paginate();
-		$users = User::find(2)->tasks;
+		//$users = User::all()->;
 		//$tasks = Task::find(4)->user();
 
 
-		dd($users);
-		dd($tasks);
+		//dd($users);
+		//dd($tasks);
 		
 		// Set return data 
-	   	$tasks = Task::paginate(2);
+	   	$tasks = Task::all();
 
 	   	// Set pagination path
-	   	$tasks->setPath('tasks');
+	   	//$tasks->setPath('tasks');
 
 	   	// Set data to return
 	   	$data = ['tasks'=>$tasks];
 
 	   	// Return data and view
-	   	return $this->view('tasks.index')->data($data)->title('Tasks - Laravel Tasks'); 
+	   	return $this->view('admin.sentinel.tasks.index')->data($data)->title('Tasks - Laravel Tasks'); 
 	}
 
 	/**

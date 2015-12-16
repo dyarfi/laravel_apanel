@@ -1,7 +1,7 @@
-<?php namespace Tasks\Repositories;
+<?php namespace App\Repositories;
 
 
-use Tasks\Db\User;
+use App\Db\User;
 use Illuminate\Support\Facades\Request as Request;
 
 

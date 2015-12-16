@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,7 +35,7 @@ class Setting extends Model {
     // a task is owned by a user
     public function user()
     {
-        return $this->belongsTo('Tasks\Db\User','user_id','id');
+        return $this->belongsTo('App\Db\User','user_id','id');
     }
 
 }

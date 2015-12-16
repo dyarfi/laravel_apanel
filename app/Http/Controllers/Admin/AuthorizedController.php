@@ -1,4 +1,4 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes and Sentinel classes
 use Request, Redirect, Response, View, Route;
@@ -8,26 +8,21 @@ use Event;
 
 class AuthorizedController extends BaseAdmin {
 
+	// Get current class basename
+	public $class_name = '';
+
+	// get current action basename
+	public $action_name = '';
+
 	// Get user data via sentinel auth
 	public $user = '';
 
 	// Constructor
 	public function __construct()
 	{
-		parent::__construct();
-
-		/*
-        if(! Sentinel::check()) {
-
-    		return View::make('admin.errors.noaccess');
-
-        } 
-        */
+		parent::__construct();		
 
 		$this->user = Sentinel::getUser();
-
-		//dd ( $this->user->roles() );
-		//dd ($this->user->roles()->first()->permissions);
 
 	}
 

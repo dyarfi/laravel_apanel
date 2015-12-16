@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,10 +30,20 @@ class Role extends Model {
     // Instead, a deleted_at timestamp is set on the record.
     protected $dates = ['deleted_at'];
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'permissions' => 'array'
+        // 'is_admin' => 'boolean',
+    ];
+
     public function users()
     {
         //$this->belongsToMany('App\Role', 'user_roles', 'user_id', 'foo_id');
-        return $this->belongsToMany('Tasks\Db\User','role_users', 'role_id', 'user_id');
+        return $this->belongsToMany('App\Db\User','role_users', 'role_id', 'user_id');
     }
 
 }

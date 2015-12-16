@@ -34,7 +34,7 @@
                 //$user_roles[$i]->permissions = json_decode($user_roles[$i]->permissions,1);
                 $slug               = strtolower(head(array_keys($values)));
                 $user_roles         = $user->roles()->get();
-                $user_permissions   = json_decode($user_roles[0]->permissions,1);
+                $user_permissions   = $user_roles[0]->permissions;
                 //print_r( $user_permissions[ $slug ] );
                 if(isset($user_permissions[ $slug ])) {
                 ?>                
@@ -110,13 +110,13 @@
     </p>
     <div class="row">
         <div class="col-md-5 col-xs-6">
-            <a href="{{ route('users.index') }}" class="btn btn-info btn-xs">Back to all users</a>
-            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-xs">Edit user</a>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-info btn-xs">Back to all users</a>
+            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-xs">Edit user</a>
         </div>
         <div class="col-md-5 col-xs-6 text-right">
             {!! Form::open([
                 'method' => 'DELETE',
-                'route' => ['users.destroy', $user->id]
+                'route' => ['admin.users.trash', $user->id]
             ]) !!}
                 {!! Form::submit('Delete this user?', ['class' => 'btn btn-danger btn-xs']) !!}
             {!! Form::close() !!}

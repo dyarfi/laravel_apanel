@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +25,7 @@ class RoleUser extends Model {
     public function users()
     {
         //$this->belongsToMany('App\Role', 'user_roles', 'user_id', 'foo_id');
-        return $this->belongsToMany('Tasks\Db\User');
+        return $this->belongsToMany('App\Db\User');
     }
 
 }

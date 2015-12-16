@@ -1,13 +1,13 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Auth, Session, Redirect, Input, View;
 // Load Sentinel and Socialite classes
 use Sentinel, Socialite;
 // Load other classes
-use Tasks\Http\Controllers\Admin\BaseAdmin;
+use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
-use Tasks\Db\User, Tasks\Db\Role, Tasks\Db\Task;
+use App\Db\User, App\Db\Role, App\Db\Task;
 
 class PermissionsController extends AuthorizedController {
 
@@ -46,12 +46,14 @@ class PermissionsController extends AuthorizedController {
 		
 		$permissions = Role::all();
 		
-		$permissions->each(function($value) {
-			$value->permissions = json_decode($value->permissions,true);
-			return $value;
-		});
+		//$permissions->each(function($value) {
+			//$value->permissions = json_decode($value->permissions,true);
+			//return $value;
+		//});
+		
+		$data = ['permissions'=>$permissions];
 
-		return View::make('admin.sentinel.permissions.index', compact('permissions'));
+		return $this->view('admin.sentinel.permissions.index')->data($data)->title('Permission Listing');
 	}
 
 
@@ -231,7 +233,7 @@ class PermissionsController extends AuthorizedController {
 			}
 
 	        // Change permissions data to array 
-	        $user->permissions = json_decode($user->permissions, true);
+	        // $user->permissions = json_decode($user->permissions, true);
 
 		}
 		else {

@@ -1,9 +1,9 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View;
 // Load main models
-use Tasks\Db\Role, Tasks\Db\User;
+use App\Db\Role, App\Db\User;
 
 class UsersController extends AuthorizedController {
 
@@ -33,6 +33,7 @@ class UsersController extends AuthorizedController {
 
 		$this->roles = new Role;
 
+		$this->user  = $this->users->find($this->user->id);
 	}
 
 	/**
@@ -65,10 +66,8 @@ class UsersController extends AuthorizedController {
 	public function profile() {
 
 		// Set return data 
-	   	//$user = Sentinel::getUser();
 	   	$user = $this->user;	
-	   	//dd($user);
-
+	   	
 	   	// Set data to return
 	   	$data = ['user'=>$user];
 
@@ -86,10 +85,7 @@ class UsersController extends AuthorizedController {
 	{
 		// Get data from database
         $user = $this->users->findOrFail($id);
-
-        // Change permissions data to array 
-        $user->permissions = json_decode($user->permissions, true);
-
+        
         // Read ACL settings config for any permission access
         $acl = config('setting.acl');
         	               	       
@@ -246,16 +242,30 @@ class UsersController extends AuthorizedController {
 	protected function processForm($mode, $id = null)
 	{
 		$input = array_filter(Input::all());
-
+		
 		$rules = [
 			'first_name' => 'required',
 			'last_name'  => 'required',
 			'role_id'  	 => 'required',			
 			'email'      => 'required|unique:users'
 		];
-		
+
 		if ($id)
 		{
+			
+			if (isset($input['_private'])) {
+				
+				list($csrf, $email, $role_id) = explode('::', base64_decode($input['_private']));
+
+				if ($csrf == $input['_token']) {
+
+					$input['role_id'] 	=  $role_id;
+					$input['email'] 	=  $email;
+
+				}
+
+			}
+
 			$user = Sentinel::getUserRepository()->createModel()->find($id);
 
 			$rules['email'] .= ",email,{$user->email},email";
@@ -273,10 +283,23 @@ class UsersController extends AuthorizedController {
 				} else {
 
 					// Syncing relationship Many To Many // Update Existing
-					$user->roles()->sync(['role_id'=>$input['role_id']]);
-					
-					// Update user model data
-					Sentinel::getUserRepository()->update($user, $input);
+					$user->roles()->sync(['role_id'=>$input['role_id']]);					
+
+
+
+					if (isset($input['_private'])) {
+
+						// Get user model to update other profile data
+						User::find($id)->update($input);
+
+						return Redirect::back()->withInput()->with('success', 'Profile Updated!');
+
+					} else {
+						
+						// Update user model data
+						Sentinel::getUserRepository()->update($user, $input);
+
+					}
 
 				}
 				
@@ -303,7 +326,7 @@ class UsersController extends AuthorizedController {
 
 		if ($messages->isEmpty())
 		{
-			return Redirect::to(route('admin.users.index'))->with('success', 'User Updated!');;
+			return Redirect::to(route('admin.users.index'))->with('success', 'User Updated!');
 		}
 
 		return Redirect::back()->withInput()->withErrors($messages);

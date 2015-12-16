@@ -1,11 +1,11 @@
-<?php namespace Tasks\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 // Load Laravel class
 use Request, Input, Validator, Redirect, Session;
 // Load main models
-use Tasks\Db\Task;
+use App\Db\Task;
 
 class TasksController extends Controller {
 

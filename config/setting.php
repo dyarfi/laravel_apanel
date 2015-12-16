@@ -109,5 +109,23 @@ return [
 						]
 					]
 				]	
-			 ]
+			 ],
+
+
+ 	/*	 
+	 |--------------------------------------------------------------------------
+	 | Users attributes default in administrator panel
+	 |--------------------------------------------------------------------------
+	 | 
+	 | Modify or add new configuration
+	 | Always add new array [attribute],[value] for registering new attribute
+	 |
+	 */
+	 
+	 'attributes' => 
+		['skins' => 
+			['#438EB9' => true, '#222A2D' => false, '#C6487E' => false, '#D0D0D0' => false]
+	 	]
+	
+
 ];

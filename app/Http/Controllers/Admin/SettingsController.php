@@ -1,11 +1,11 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Auth, Session, Redirect, Input, Validator, View;
 // Load other classes
-use Tasks\Http\Controllers\Admin\BaseAdmin;
+use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
-use Tasks\Db\setting, Tasks\Db\User;
+use App\Db\setting, App\Db\User;
 
 class SettingsController extends AuthorizedController {
 	/**
@@ -31,6 +31,31 @@ class SettingsController extends AuthorizedController {
 
 		// Load settings and get repository data from database
 		$this->settings = new Setting;
+
+		
+		//$subject = 'The Truth newsletter - Laravel Newsletter';
+		//$contents = '<h1>Big news</h1>The world is carried by four elephants on a turtle!';
+
+		//dd(Newsletter::createCampaign($subject, $contents));
+
+
+		//Newsletter::subscribe('defrian.yarfi@gmail.com', ['firstName'=>'Havelock', 'lastName'=>'Vetinari'], 'Laravel Newsletter Page');
+		//Newsletter::subscribe('dyarfi20@gmail.com', ['firstName'=>'Havelock2', 'lastName'=>'Vetinari2'], 'Laravel Newsletter Page');
+		
+		//Newsletter::unsubscribe('sam.vimes@discworld.com', ['firstName'=>'Sam', 'lastName'=>'Vines'], 'mySecondList');
+
+		//dd(Newsletter::createCampaign($subject, $contents, 'Laravel Newsletter Page'));
+
+		//dd(Newsletter::sendCampaign('565089'));
+
+		//$api = Newsletter::getApi();
+
+		//dd($api->call('campaigns/list',1));
+
+		//$lists = Newsletter::getApi();		
+		//$campaigns = element('data',$lists);
+
+		//dd($lists->call('campaigns/list',true));
 
 	}
 	
@@ -239,6 +264,7 @@ class SettingsController extends AuthorizedController {
 			{
 				$setting->update($input);
 			}
+
 		}
 		else
 		{

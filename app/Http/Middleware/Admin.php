@@ -1,8 +1,8 @@
-<?php namespace Tasks\Http\Middleware;
+<?php namespace App\Http\Middleware;
 
 use Closure;
 //use Illuminate\Contracts\Auth\Guard;
-use Tasks\Db\User;
+use App\Db\User;
 use Illuminate\Routing\Router;
 use Sentinel;
 use Response;
@@ -23,11 +23,9 @@ class Admin {
 	/**
 	 * Create a new filter instance.
 	 *
-	 * @param  Guard  $auth
+	 * @param  Router  $router
 	 * @return void
 	 */
-
-
     public function __construct(User $user, Router $router)
     {
         $this->router = $router;
@@ -53,7 +51,7 @@ class Admin {
 		$access 		= explode("controller@", $class);
 		
 		// Glues controller and action for checking
-		$accessRoutes 	= join('.', $access);		
+		$accessRoutes 	= join('.', $access);	
 		
 		if (! Sentinel::check()) {
 			

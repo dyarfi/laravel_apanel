@@ -142,18 +142,17 @@ return [
 		/*
 		 * Application Service Providers...
 		 */
-		'Tasks\Providers\AppServiceProvider',
-		'Tasks\Providers\BusServiceProvider',
-		'Tasks\Providers\ConfigServiceProvider',
-		'Tasks\Providers\EventServiceProvider',
-		'Tasks\Providers\RouteServiceProvider',
+		'App\Providers\AppServiceProvider',
+		'App\Providers\BusServiceProvider',
+		'App\Providers\ConfigServiceProvider',
+		'App\Providers\EventServiceProvider',
+		'App\Providers\RouteServiceProvider',
 		'Laravel\Socialite\SocialiteServiceProvider',		
 
 		/*
-		 * Sentinel user groups permission
+		 * Cartalyst https://cartalyst.com/manual/sentinel/2.0 - Sentinel user groups permission
 		 */
-		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
-
+		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider'
 
 	],
 
@@ -214,7 +213,7 @@ return [
 		'Activation'      => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
 		'Auth'            => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 		'Reminder'        => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
-		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
+		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel'		
 	],
 
 ];

@@ -1,10 +1,10 @@
-<?php namespace Tasks\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 //use Illuminate\Routing\Controller;
 use Socialite;
 use Auth;
 use Input;
-use Tasks\Db\User;
+use App\Db\User;
 
 class AuthSocialController extends Controller {
 

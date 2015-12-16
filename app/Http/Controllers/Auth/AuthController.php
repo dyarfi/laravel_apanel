@@ -1,12 +1,12 @@
-<?php namespace Tasks\Http\Controllers\Auth;
+<?php namespace App\Http\Controllers\Auth;
 
-use Tasks\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Request as Request;
-use Tasks\AuthenticateUser;
-use Tasks\Db\User;
+use App\AuthenticateUser;
+use App\Db\User;
 
 class AuthController extends Controller {
 

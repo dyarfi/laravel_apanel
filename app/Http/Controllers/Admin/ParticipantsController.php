@@ -1,9 +1,9 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View;
 // Load main models
-use Tasks\Db\Role, Tasks\Db\User;
+use App\Db\Role, App\Db\User;
 
 class ParticipantsController extends AuthorizedController {
 

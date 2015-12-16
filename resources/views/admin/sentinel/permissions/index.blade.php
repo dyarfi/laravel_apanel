@@ -12,10 +12,10 @@
 <br><br>
 <table class="table table-bordered table-hover">
 	<thead>
-		<th class="col-lg-6">Name</th>
+		<th class="col-lg-3">Name</th>
 		<!-- <th class="col-lg-6">Users</th>-->
-		<th class="col-lg-4">Permission</th>
-		<th class="col-lg-2">Users</th>
+		<th class="col-lg-4">Access Permission</th>
+		<th class="col-lg-5">Users Permissions</th>
 	</thead>
 	<tbody>
 		@foreach ($permissions as $role) 

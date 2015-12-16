@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name','username','email','avatar','provider_id','provider','about', 'password'];
+	protected $fillable = ['name','username','email','avatar','provider_id','provider','about','attributes','password'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -38,13 +38,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     // Instead, a deleted_at timestamp is set on the record.
     protected $dates = ['deleted_at'];
 
+    /**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+	    'attributes'  => 'object',
+	    'permissions' => 'array'
+	    // 'is_admin' => 'boolean',
+	];
+
 	/**
 	 * A user can have many tasks.
 	 *
 	 */
 	public function tasks()
 	{
-		return $this->hasMany('Tasks\Db\Task','user_id');
+		return $this->hasMany('App\Db\Task','user_id');
 	}
 
 	/**
@@ -53,8 +64,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function roles()
 	{
-		//return $this->hasOne('Tasks\Db\RoleUser');
-		return $this->belongsToMany('Tasks\Db\Role','role_users');
+		//return $this->hasOne('App\Db\RoleUser');
+		return $this->belongsToMany('App\Db\Role','role_users');
 
 	}
 }

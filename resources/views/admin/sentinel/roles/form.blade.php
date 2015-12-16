@@ -37,11 +37,11 @@
 		<div class="form-group">
 			<div class="clearfix">
 				<span class="col-md-2">
-					{!! Form::radio('permissions', 'true', ($mode == 'create') ? 'false' : ($role->permissions['admin'] === true ? true : false)); !!}
+					{!! Form::radio('permissions', 'true', ($mode == 'create') ? 'false' : (isset($role->permissions['admin']) && $role->permissions['admin'] === true ? true : false)); !!}
 					{!! Form::label('', 'Admin Access',['class'=>'text-success']); !!}
 				</span>
 				<span class="col-md-2">
-					{!! Form::radio('permissions', 'false', ($mode == 'create') ? true : ($role->permissions['admin'] === false ? true : false)); !!}
+					{!! Form::radio('permissions', 'false', ($mode == 'create') ? true : (isset($role->permissions['admin']) && $role->permissions['admin'] === false ? true : false)); !!}
 					{!! Form::label('', 'No Admin Access',['class'=>'text-danger']); !!}
 				</span>
 			</div>

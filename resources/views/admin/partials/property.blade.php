@@ -1,6 +1,6 @@
 <div class="navbar-buttons navbar-header pull-right" role="navigation">
   <ul class="nav ace-nav">
-    <li class="grey">
+    <li class="grey hidden">
       <a data-toggle="dropdown" class="dropdown-toggle" href="#">
         <i class="ace-icon fa fa-tasks"></i>
         <span class="badge badge-grey">4</span>
@@ -77,7 +77,7 @@
       </ul>
     </li>
 
-    <li class="purple">
+    <li class="purple hidden">
       <a data-toggle="dropdown" class="dropdown-toggle" href="#">
         <i class="ace-icon fa fa-bell icon-animated-bell"></i>
         <span class="badge badge-important">8</span>
@@ -145,7 +145,7 @@
       </ul>
     </li>
 
-    <li class="green">
+    <li class="green hidden">
       <a data-toggle="dropdown" class="dropdown-toggle" href="#">
         <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
         <span class="badge badge-success">5</span>
@@ -279,6 +279,12 @@
             <i class="ace-icon fa fa-user"></i>
             Profile
           </a>
+        </li>
+
+        <li>
+          <a href="{{ URL::to($admin_url.'/account') }}" class="btn disabled btn-xs">
+            Last Login : {{ Auth::getUser()->last_login }}
+          </a>          
         </li>
 
         <li class="divider"></li>

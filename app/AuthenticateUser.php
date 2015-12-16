@@ -1,8 +1,8 @@
-<?php namespace Tasks;
+<?php namespace App;
 
 use Illuminate\Contracts\Auth\Guard; 
 
-use Tasks\Repositories\UserRepository; 
+use App\Repositories\UserRepository; 
 //use Request;
 
 class AuthenticateUser {

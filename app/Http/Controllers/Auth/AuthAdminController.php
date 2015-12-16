@@ -1,6 +1,6 @@
-<?php namespace Tasks\Http\Controllers\Auth;
+<?php namespace App\Http\Controllers\Auth;
 
-use Tasks\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 //use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 //use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 //use Cartalyst\Sentinel\Checkpoints\ThrottlingException;

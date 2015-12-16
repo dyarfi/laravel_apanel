@@ -40,7 +40,8 @@
       <script type="text/javascript">
         try{ace.settings.check('navbar' , 'fixed')}catch(e){}
       </script>
-      <div class="navbar-container" id="navbar-container">
+      <!-- <div class="navbar-container" id="navbar-container"> -->
+      <div class="navbar" id="navbar-container">  
         <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
           <span class="sr-only">Toggle sidebar</span>
           <span class="icon-bar"></span>
@@ -79,7 +80,14 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{ URL::to($admin_url.'/dashboard') }}">Home</a>
               </li>
-              <li class="active">Dashboard</li>
+              <li class="active">
+                <a href="{{ route('admin.'.strtolower($controller).'.index') }}">{{ ucfirst($controller) }}</a>
+              </li>
+              @if($action)
+              <li class="">
+                {{ ucfirst($action) }}
+              </li>
+              @endif
             </ul><!-- /.breadcrumb -->
 
             <!--div class="nav-search" id="nav-search">
@@ -91,7 +99,6 @@
               </form>
             </div--><!-- /.nav-search -->
           </div>
-
           <div class="page-content">
             <div class="ace-settings-container" id="ace-settings-container">
               <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
@@ -282,8 +289,8 @@
     <script type="text/javascript">
       jQuery(function($) {
 
-        // ---------------------- ADMINISTRATOR Javascript Custom Function -- start [ --------------------------      
-        
+        // ---------------------- ADMINISTRATOR Javascript Custom Function -- start [ --------------------------        
+
         // Add active class to current page menu
         $('.submenu').find('.active').parents('li').addClass('active').find('b').removeClass('arrow fa fa-angle-down');
         

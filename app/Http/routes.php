@@ -180,6 +180,15 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('tasks/{id}/delete', ['as'=>'admin.tasks.delete','uses'=>'Admin\TasksController@delete']);
 
 });
+
+/*
+// Display all SQL executed in Eloquent
+Event::listen('illuminate.query', function($query)
+{
+    var_dump($query);
+});
+*/
+
 // ******************* Admin Routes ********************* } //
 
 

@@ -1,4 +1,4 @@
-<?php namespace Tasks\Providers;
+<?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -11,7 +11,21 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+
+		// Returning the current class name and action
+		app('view')->composer('admin.template', function($view)
+	    {
+	    	// $basename =  explode("@", str_replace('Controller','',class_basename(Route::getCurrentRoute()->getActionName())));
+	        // $action = app('request')->route()->getAction();
+			$action = app('request')->route()->getActionName();
+
+	        // $controller = class_basename($action['controller']);
+			$controller = class_basename($action);
+
+	        list($controller, $action) = explode('Controller@', $controller);
+
+	        $view->with(compact('controller', 'action'));
+	    });
 	}
 
 	/**
@@ -27,7 +41,7 @@ class AppServiceProvider extends ServiceProvider {
 	{
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',
-			'Tasks\Services\Registrar'
+			'App\Services\Registrar'
 		);
 	}
 

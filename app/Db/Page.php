@@ -1,4 +1,4 @@
-<?php namespace Tasks\Db;
+<?php namespace App\Db;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,7 +33,7 @@ class Page extends Model {
     public function users()
     {
         //$this->belongsToMany('App\Role', 'user_roles', 'user_id', 'foo_id');
-        //return $this->belongsToMany('Tasks\Db\User','role_users', 'role_id', 'user_id');
+        //return $this->belongsToMany('App\Db\User','role_users', 'role_id', 'user_id');
     }
 
 }

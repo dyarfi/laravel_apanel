@@ -1,11 +1,11 @@
-<?php namespace Tasks\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
 use Route, Request, Session, Redirect, Input, Validator, View;
 // Load other classes
-use Tasks\Http\Controllers\Admin\BaseAdmin;
+use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
-use Tasks\Db\Page;
+use App\Db\Page;
 
 class PagesController extends AuthorizedController {
 
