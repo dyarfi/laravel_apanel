@@ -14,7 +14,11 @@ class CreateSettings extends Migration {
             $table->string('slug')->nullable();            
             $table->text('description')->nullable();
             $table->text('value')->nullable();
-            $table->text('help_text')->nullable();            
+            $table->text('help_text')->nullable();   
+            $table->string('input_type')->nullable();            
+            $table->boolean('editable')->default();
+            $table->integer('weight')->nullable();            
+            $table->text('attributes')->nullable();            
             $table->boolean('status')->default(1);
             $table->nullableTimestamps();
             $table->softDeletes();            

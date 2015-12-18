@@ -70,4 +70,16 @@ class Participant extends Model implements AuthenticatableContract, CanResetPass
     // Instead, a deleted_at timestamp is set on the record.
     protected $dates = ['deleted_at'];
 
+	/**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'verify'      => 'boolean',
+        'completed'   => 'boolean',        
+        'logged_in'   => 'boolean',
+        'status'      => 'boolean'
+    ];
+
 }

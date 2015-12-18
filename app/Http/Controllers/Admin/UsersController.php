@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
-use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View;
+use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View, Auth;
 // Load main models
 use App\Db\Role, App\Db\User;
 
@@ -33,7 +33,7 @@ class UsersController extends AuthorizedController {
 
 		$this->roles = new Role;
 
-		$this->user  = $this->users->find($this->user->id);
+		//$this->user  = Auth::getUser();
 	}
 
 	/**
@@ -66,7 +66,7 @@ class UsersController extends AuthorizedController {
 	public function profile() {
 
 		// Set return data 
-	   	$user = $this->user;	
+	   	$user = User::find($this->user->id);
 	   	
 	   	// Set data to return
 	   	$data = ['user'=>$user];

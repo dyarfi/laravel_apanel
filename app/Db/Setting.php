@@ -26,11 +26,27 @@ class Setting extends Model {
         'description',
         'value',
         'help_text',
+        'input_type',
+        'editable',
+        'weight',        
+        'attributes',
         'status'
     ];
 
     // Instead, a deleted_at timestamp is set on the record.
     protected $dates = ['deleted_at'];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'editable'    => 'boolean',
+        'attributes'  => 'object',
+        'status'      => 'boolean'
+
+    ];
 
     // a task is owned by a user
     public function user()
