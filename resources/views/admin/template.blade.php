@@ -116,7 +116,7 @@
                         if ($setting == 'skins') {
                           $d=1;
                           foreach ($attribute as $attr => $val) {
-                                if (app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
+                                if (app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins && app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
                                 <option data-skin="no-skin" value="{{$attr}}" checked="checked" data-skin="no-skin">{{$attr}}</option>
                             <?php } else { ?>
                                 <option data-skin="skin-{{$d}}" value="{{$attr}}">{{$attr}}</option>
