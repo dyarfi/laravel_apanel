@@ -12,15 +12,13 @@
 </div>
 @endif
 @if ($settings->count())
-<small class="grey">{{-- @if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif --}}</small>
 <br><br>
 <div class="row">
 	<div class="col-xs-12">		
 		<div class="clearfix">
 			<div class="pull-right tableTools-container"></div>
 		</div>
-		{!! Form::open(['route'=>'admin.settings.index']) !!}
-		<div>
+		{!! Form::open(['route'=>'admin.settings.index']) !!}		
 		<table id="dynamic-table" class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -73,15 +71,28 @@
 				</tr>
 				@endforeach
 			</tbody>
-		</table>
-		</div>
+			<tr>
+			    <td id="corner"><span class="glyphicon glyphicon-minus"></span></td>
+			    <td colspan="8">
+				<div id="selection" class="input-group">
+				    <div class="form-group form-group-sm">
+						<label class="col-xs-6 control-label small grey" for="select_action"> Change status : </label>
+						<div class="col-xs-6" id="select_action">
+						<select id="select_action" class="form-control input-sm" name="select_action">
+							<option value=""> </option>
+							<option value="1"> Active </option>
+							<option value="2"> Inactive </option>
+						</select>
+						</div>
+				      </div>
+				 </div>   
+			    </td>
+			</tr>
+		</table>		
 		{!! Form::close() !!}
 	</div>
 </div>
-<small class="grey">{{--@if ($settings->count()) Page {{ @$settings->currentPage() }} of {{ @$settings->lastPage() }} @endif--}}</small>
-<div class="pull-right">
-{{--	{!! $settings->render() !!}  --}}
-</div>
+
 @else
 <br><br>
 <div class="well">

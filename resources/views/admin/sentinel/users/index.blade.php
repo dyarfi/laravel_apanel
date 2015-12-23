@@ -12,25 +12,33 @@
 </div>
 @endif
 @if ($users->count())
-<small class="grey">@if ($users->count()) Page {{ @$users->currentPage() }} of {{ @$users->lastPage() }} @endif</small>
 <br><br>
 <div class="row">
 	<div class="col-xs-12">
+		<div class="clearfix">	
+			<div class="pull-right tableTools-container"></div>
+		</div>
 		{!! Form::open(['route'=>'admin.users.index']) !!}
-		<table class="table table-bordered table-hover">
+		<table id="dynamic-table" class="table table-bordered table-hover">
 			<thead>
-				<th>{!! Form::checkbox('change_all_status','',false,['class'=>'group-checkable']); !!}</th>
-				<th class="col-lg-3">Name</th>
-				<th class="col-lg-3">Email</th>
-				<th class="col-lg-3">Role</th>
-				<th class="col-lg-6">Actions</th>
+				<tr>
+					<th class="center"><label class="pos-rel"><input type="checkbox" class="ace" /><span class="lbl"></span></label></th>
+					<th class="col-lg-2">Name</th>
+					<th class="col-lg-3">Email</th>
+					<th class="col-lg-3">Role</th>
+					<th class="col-lg-2">Created At</th>	
+					<th class="col-lg-6 col-xs-3">Actions</th>
+				</tr>
 			</thead>
 			<tbody>
 				@foreach ($users as $user)
 				<tr class="{{ $user->deleted_at ? ' bg-warning' :'' }}">
-					<td>
-						{!! Form::checkbox('check[]', $user->id, false, ['id'=>$user->id,'class'=>'checkboxes']); !!}
-					</td>
+					<td class="center">
+						<label class="pos-rel">
+							<input type="checkbox" class="ace" />
+							<span class="lbl"></span>
+						</label>
+					</td>					
 					<td>{{ $user->first_name }} {{ $user->last_name }}</td>
 					<td>{{ $user->email }}</td>
 					<td>
@@ -49,6 +57,9 @@
 		            @else
 		                <div class="label label-danger arrowed-in arrowed-in-right"><span class="fa fa-ban fa-sm"></span> No Role</div>
 		            @endif  
+		        	</td>
+		        	<td>
+		        		{{ $user->created_at}}
 		        	</td>
 					<td>
 						<div class="btn-group">
@@ -76,35 +87,28 @@
 						</div>
 					</td>
 				</tr>
-				@endforeach
-				<tr class="grey active">
-					<td id="corner" rowspan="1" colspan="1">
-						<span class="glyphicon glyphicon-minus"></span>
-					</td>
-					<td colspan="8" rowspan="1">
-						<div id="selection" class="input-group">
-							<div class="form-group form-group-sm">
-								<label class="col-xs-6 control-label small" for="select_action"> Change status : </label>
-								<div class="col-xs-6">
-								<select id="select_action" class="form-control input-sm" name="select_action">
-									<option value=""> </option>
-									<option value=""> </option>
-									<option value="1"> Active </option>
-									<option value="2"> Inactive </option>
-								</select>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
+				@endforeach				
 			</tbody>
+			<tr>
+			    <td id="corner"><span class="glyphicon glyphicon-minus"></span></td>
+			    <td colspan="8">
+				<div id="selection" class="input-group">
+				    <div class="form-group form-group-sm">
+						<label class="col-xs-6 control-label small grey" for="select_action"> Change status : </label>
+						<div class="col-xs-6" id="select_action">
+						<select id="select_action" class="form-control input-sm" name="select_action">
+							<option value=""> </option>
+							<option value="1"> Active </option>
+							<option value="2"> Inactive </option>
+						</select>
+						</div>
+				      </div>
+				 </div>   
+			    </td>
+			</tr>
 		</table>
 		{!! Form::close() !!}
 	</div>
-</div>
-<small class="grey">@if ($users->count()) Page {{ @$users->currentPage() }} of {{ @$users->lastPage() }} @endif</div>
-<div class="pull-right">
-	{!! $users->render() !!}
 </div>
 @else
 <br><br>

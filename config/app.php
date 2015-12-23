@@ -152,7 +152,7 @@ return [
 		/*
 		 * Cartalyst https://cartalyst.com/manual/sentinel/2.0 - Sentinel user groups permission
 		 */
-		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider'
+		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
 
 	],
 
@@ -213,7 +213,8 @@ return [
 		'Activation'      => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
 		'Auth'            => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 		'Reminder'        => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
-		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel'		
+		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel'
+		
 	],
 
 ];

@@ -220,7 +220,6 @@
           </div><!-- /.page-content -->
         </div>
       </div><!-- /.main-content -->
-
       <div class="footer">
         <div class="footer-inner">
           <div class="footer-content">
@@ -401,8 +400,9 @@
               null, null, null, null, 
               { "bSortable": false }
             ],
-            "aaSorting": [],
-        
+            // set the initial value
+            "iDisplayLength": 10,
+            "aaSorting": [],        
             //,
             //"sScrollY": "200px",
             //"bPaginate": false,

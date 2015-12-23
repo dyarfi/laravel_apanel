@@ -46,7 +46,7 @@ class UsersController extends AuthorizedController {
 	   	//dd ($this->users->find(1)->roles);
 
 		// Set return data 
-	   	$users = Input::get('path') === 'trashed' ? $this->users->onlyTrashed()->paginate(4) : $this->users->paginate(4);
+	   	$users = Input::get('path') === 'trashed' ? $this->users->onlyTrashed()->get() : $this->users->get();
 
 	   	// Get deleted count
 		$deleted = $this->users->onlyTrashed()->get()->count();
@@ -54,7 +54,15 @@ class UsersController extends AuthorizedController {
 	   	// Set data to return
 	   	$data = ['users'=>$users,'deleted'=>$deleted,'junked'=>Input::get('path')];
 
-	   	return $this->view('admin.sentinel.users.index')->data($data)->title('User List');
+   		// Load needed scripts
+	   	$scripts = [
+	   				'dataTables'=> 'assets.admin/js/jquery.dataTables.min.js',
+	   				'dataTableBootstrap'=> 'assets.admin/js/jquery.dataTables.bootstrap.min.js',
+	   				'dataTableTools'=> 'assets.admin/js/dataTables.tableTools.min.js',
+	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js'
+	   				];
+
+	   	return $this->view('admin.sentinel.users.index')->data($data)->scripts($scripts)->title('User List');
 	}	
 	
 	/**
