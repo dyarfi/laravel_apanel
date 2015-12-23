@@ -8,7 +8,7 @@ use Request, Session, Input, URL, View;
 
 abstract class BaseAdmin extends BaseController {
 
-	use DispatchesCommands, ValidatesRequests;
+	//use DispatchesCommands, ValidatesRequests;
 
 	/**
 	* Master layout

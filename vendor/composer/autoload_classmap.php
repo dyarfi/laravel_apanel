@@ -11,6 +11,7 @@ return array(
     'CreateParticipantsTable' => $baseDir . '/database/migrations/2015_12_03_144553_create_participants_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/migrations.bak/2014_10_12_100000_create_password_resets_table.php',
     'CreateSettings' => $baseDir . '/database/migrations/2015_11_24_123325_create_settings.php',
+    'CreateTableCountry' => $baseDir . '/database/migrations/2015_12_23_124143_create_table_country.php',
     'CreateTasksTable' => $baseDir . '/database/migrations/migrations.bak/2015_10_26_155821_create_tasks_table.php',
     'CreateUserGroupsTable' => $baseDir . '/database/migrations/migrations.bak/2015_10_28_165713_create_user_groups_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/migrations.bak/2015_10_09_194502_create_users_table.php',

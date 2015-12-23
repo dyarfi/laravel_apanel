@@ -20,8 +20,9 @@ class AuthorizedController extends BaseAdmin {
 	// Constructor
 	public function __construct()
 	{
-		parent::__construct();		
-
+		
+		parent::__construct();
+		
 		$this->user = Sentinel::getUser();
 
 	}

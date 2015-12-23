@@ -143,7 +143,7 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('dashboard', 'Admin\UsersController@dashboard');
 
     // Get no access pages
-    Route::get('noaccess', 'Admin\AuthorizedController@unauthorized');
+    Route::get('noaccess', ['as'=>'admin.noaccess','uses'=>'Admin\AuthorizedController@unauthorized']);
 
     // Pages Controller routes
     Route::get('pages', ['as'=>'admin.pages.index','uses'=>'Admin\PagesController@index']);

@@ -200,11 +200,14 @@ class RolesController extends AuthorizedController {
 			{
 				return Redirect::to(route('admin.roles.index'));
 			}
+
+			$role = Role::find($id);
+
 		}
 		else
 		{
 			//$role = $this->roles;
-			$role = Role::find($id);
+			$role = $this->roles;
 		}
 		
 		$acl = config('setting.acl');

@@ -125,7 +125,10 @@ return [
 	 'attributes' => 
 		['skins' => 
 			['#438EB9' => true, '#222A2D' => false, '#C6487E' => false, '#D0D0D0' => false]
-	 	]
+	 	],
+	 	['show_email' => 
+	 		['Yes' => 1, 'No' => 0]
+	 	],
 	
 
 ];

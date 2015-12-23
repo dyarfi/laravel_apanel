@@ -46,17 +46,24 @@
 				</span>
 			</div>
 		</div>	
-		@foreach ($role->permissions as $permission => $val)
-			@if(Auth::hasAccess('admin') && $permission == 'admin')
-				{!! Form::checkbox('permission[]', $val, $val ? true : false, ['disabled']) !!}
-			@else			
-				{!! Form::checkbox('permission[]', $val, $val ? true : false) !!}	
+		<div class="form-group">
+			@if($role->permissions)
+			<div class="col-md-2">
+			@foreach ($role->permissions as $permission => $val)
+				@if(Auth::hasAccess('admin') && $permission == 'admin')
+					{!! Form::checkbox('permission[]', $val, $val ? true : false, ['disabled']) !!}
+				@else			
+					{!! Form::checkbox('permission[]', $val, $val ? true : false) !!}	
+				@endif
+				{!! Form::label('permission[]', ucfirst($permission)) !!}
+			@endforeach
+			</div>
 			@endif
-			{!! Form::label('permission[]', ucfirst($permission)) !!}
-		@endforeach
-		<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
+			<span class="label label-info"><span class="fa fa-key"></span> {!! link_to_route('admin.permissions.edit', 'Access Permission', ['id'=>$role->id,'access=role'], ['class'=>'white']) !!}</span>
+			<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
+		</div>
 	</div>
-
+	
 	<button type="submit" class="btn btn-default">Submit</button>
 
 {!! Form::close() !!}

@@ -15,9 +15,10 @@
 <br><br>
 <table class="table table-bordered table-hover">
 	<thead>
-		<th class="col-lg-3">Name</th>
-		<th class="col-lg-3">Slug</th>
-		<th class="col-lg-3">Permission</th>
+		<th class="col-lg-2">Name</th>
+		<th class="col-lg-2">Slug</th>
+		<th class="col-lg-2">Permission</th>
+		<th class="col-lg-4">Access</a>
 		<th class="col-lg-4">Actions</th>
 	</thead>
 	<tbody>
@@ -26,8 +27,18 @@
 			<td>{{ $role->name }}</td>
 			<td>{{ $role->slug }}
 			</td>			
-			<td>{!! (!empty($role->permissions['admin']) && $role->permissions['admin'] === true) ? '<span class="label label-success arrowed-in arrowed-in-right"><span class="fa fa-user fa-sm"></span> Superadmin</span>' 
+			<td>
+				{!! (!empty($role->permissions['admin']) && $role->permissions['admin'] === true) ? '<span class="label label-success arrowed-in arrowed-in-right"><span class="fa fa-user fa-sm"></span> Superadmin</span>' 
 				: '<span class="label label-danger arrowed-in arrowed-in-right"><span class="fa fa-ban fa-sm"></span> General</span>' !!}</td>
+			<td>			
+				<span class="label label-info">
+					@if(is_array($role->permissions))
+						[{{ ucwords(implode(', ', array_keys($role->permissions))) }}]
+					@else
+						NO ACCESS	
+					@endif
+				</span>
+			</td>	
 			<td>
 				<div class="btn-group">
 					@if (!$role->deleted_at)

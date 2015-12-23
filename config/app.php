@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://localhost/laravel_tasks/',
+	'url' => 'http://localhost/laravel_apanel/',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -32,8 +32,7 @@ class UsersController extends AuthorizedController {
 		$this->users = new User;
 
 		$this->roles = new Role;
-
-		//$this->user  = Auth::getUser();
+		
 	}
 
 	/**
@@ -66,7 +65,7 @@ class UsersController extends AuthorizedController {
 	public function profile() {
 
 		// Set return data 
-	   	$user = User::find($this->user->id);
+	   	$user = Sentinel::getUser() ? User::find(Sentinel::getUser()->id) : '';
 	   	
 	   	// Set data to return
 	   	$data = ['user'=>$user];
