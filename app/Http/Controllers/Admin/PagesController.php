@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
 use App\Db\Page;
 
-class PagesController extends AuthorizedController {
+class PagesController extends BaseAdmin {
 
 	/**
 	 * Create a new controller instance.

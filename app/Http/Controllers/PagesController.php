@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller {
 
+
+	//public $restful = true;
+
 	/**
 	 * Create a new controller instance.
 	 *

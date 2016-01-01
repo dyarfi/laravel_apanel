@@ -1,6 +1,6 @@
-@extends('layouts.master')
+@extends('admin.template')
 
-@section('content')
+@section('body')
 
 <h1>Edit Task - {{ $task->title }} </h1>
 <p class="lead">Edit this task below. <a href="{{ route('tasks.index') }}">Go back to all tasks.</a></p>

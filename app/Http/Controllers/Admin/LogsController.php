@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
 use App\Db\Role;
 
-class LogsController extends AuthorizedController {
+class LogsController extends BaseAdmin {
 
 	/**
 	 * Holds the Sentinel Roles repository.

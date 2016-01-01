@@ -33,7 +33,7 @@ return [
 	 */
 
 	'acl' => [
-				// Admin modules will be in the directory in Http
+				// Admin modules will be in the Admin directory in Http
 				['Admin' => [
 						//------ Admin users controller
 						['Users' => [
@@ -77,14 +77,14 @@ return [
 						]
 					]
 				],
-				// Pages modules will be in the directory in Http
+				// Pages modules will be in the Admin directory in Http
 				['Page' => [
 						//------ Pages controller
 						['Pages' => [
 								// Action for first index
 								'action' => ['pages.index'],
 								// Controller method list
-								'method' => ['pages.index','pages.edit','pages.update','pages.create','pages.store','pages.show','pages.dashboard'],
+								'method' => ['pages.index','pages.edit','pages.update','pages.create','pages.store','pages.show'],
 							]
 						],
 						//------ Menus controller
@@ -92,7 +92,7 @@ return [
 								// Action for first index
 								'action' => ['menus.index'],
 								// Controller method list
-								'method' => ['menus.index','menus.edit','menus.update','menus.create','menus.store','menus.show','menus.dashboard'],
+								'method' => ['menus.index','menus.edit','menus.update','menus.create','menus.store','menus.show'],
 							]
 						],
 					]
@@ -104,7 +104,19 @@ return [
 								// Action for first index
 								'action' => ['tasks.index'],
 								// Controller method list
-								'method' => ['tasks.index','tasks.edit','tasks.update','tasks.create','tasks.store','tasks.show','tasks.dashboard'],
+								'method' => ['tasks.index','tasks.edit','tasks.update','tasks.create','tasks.store','tasks.trash','tasks.delete','tasks.restored','tasks.show']
+							]
+						]
+					]
+				],
+				// Participant modules will be in the Admin directory in Http
+				['Participant' => [
+						//------ Tasks controller
+						['Participants' => [
+								// Action for first index
+								'action' => ['participants.index'],
+								// Controller method list
+								'method' => ['participants.index','participants.edit','participants.update','participants.create','participants.store','participants.trash','participants.delete','participants.restored','participants.show']
 							]
 						]
 					]
@@ -130,5 +142,18 @@ return [
 	 		['Yes' => 1, 'No' => 0]
 	 	],
 	
-
+	/*	 
+	 |--------------------------------------------------------------------------
+	 | Table status inactive or active attributes default in administrator panel
+	 |--------------------------------------------------------------------------
+	 | 
+	 | Modify or add new configuration
+	 | Always add new array [attribute],[value] for registering new attribute
+	 |
+	 */
+	 'status' => 
+		[
+			'Active' => 1,
+			'Inactive' => 0
+		]
 ];

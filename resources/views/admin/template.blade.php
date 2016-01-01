@@ -56,7 +56,7 @@
             </small>
           </a>
         </div>
-        @include('admin.partials.property');
+        @include('admin.partials.property')
       </div><!-- /.navbar-container -->
     </div>
 
@@ -66,7 +66,7 @@
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
       </script>
 
-      @include('admin.partials.navigation')      
+      @include('admin.partials.navigation')
 
       <div class="main-content">
         <div class="main-content-inner">
@@ -74,7 +74,8 @@
             <script type="text/javascript">
               try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
             </script>
-
+            
+            @if ($controller && $action)
             <ul class="breadcrumb">
               <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
@@ -83,12 +84,13 @@
               <li class="active">
                 <a href="{{ route('admin.'.strtolower($controller).'.index') }}">{{ ucfirst($controller) }}</a>
               </li>
-              @if($action)
-              <li class="">
-                {{ ucfirst($action) }}
-              </li>
-              @endif
+                @if($action)
+                <li class="">
+                  {{ ucfirst($action) }}
+                </li>
+                @endif
             </ul><!-- /.breadcrumb -->
+            @endif            
 
             <!--div class="nav-search" id="nav-search">
               <form class="form-search">
@@ -116,7 +118,7 @@
                         if ($setting == 'skins') {
                           $d=1;
                           foreach ($attribute as $attr => $val) {
-                                if (app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins && app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
+                              if (@app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins && app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
                                 <option data-skin="no-skin" value="{{$attr}}" checked="checked" data-skin="no-skin">{{$attr}}</option>
                             <?php } else { ?>
                                 <option data-skin="skin-{{$d}}" value="{{$attr}}">{{$attr}}</option>
@@ -367,9 +369,9 @@
         });
         
         // Set and find form Slug input from Name input
-        if ($('input[id="name"]').size() > 0 && $('input[id="slug"]').size() > 0) {
+        if ($('input[id="name"], input[id="title"]').size() > 0 && $('input[id="slug"]').size() > 0) {
           // Detects if user type on the input
-          $('input[id="name"]').on('keyup blur',function(){
+          $('input[id="name"], input[id="title"]').on('keyup blur',function(){
               var re  = /[^a-z0-9]+/gi;
               var re2 = /^-*|-*$/g;
               var value = $(this).val();
@@ -595,13 +597,15 @@
           function tooltip_placement(context, source) {
             var $source = $(source);
             var $parent = $source.closest('table')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
-        
-            var off2 = $source.offset();
-            //var w2 = $source.width();
-        
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            if ($parent.size > 0) {
+              var off1 = $parent.offset();
+              var w1 = $parent.width();
+          
+              var off2 = $source.offset();
+              //var w2 = $source.width();
+
+              if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            }
             return 'left';
           }
         }                  
@@ -802,9 +806,11 @@
       
           var off2 = $source.offset();
           //var w2 = $source.width();
-      
-          if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-          return 'left';
+          if ($parent.size() > 0) {
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+          }
+          //return 'left';
+          return 'right';
         }
       
       
@@ -856,12 +862,6 @@
 
       
       })
-    </script>
-    <script>
-    jQuery(function($) {
-      //console.log($('#skin-colorpicker').parent().find('ul li').html());
-      //$('#skin-colorpicker').parent().find('ul li a[data-color={{$attr}}]').click();
-    });
     </script>
   </body>
 </html>

@@ -5,7 +5,7 @@ use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, V
 // Load main models
 use App\Db\Role, App\Db\User;
 
-class UsersController extends AuthorizedController {
+class UsersController extends BaseAdmin {
 
 	/**
 	 * Holds the Sentinel Users repository.
@@ -79,7 +79,7 @@ class UsersController extends AuthorizedController {
 	   	$data = ['user'=>$user];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.profile')->data($data)->title('User Profile - Laravel Users'); 
+	   	return $this->view('admin.sentinel.users.profile')->data($data)->title('User Profile'); 
 	}
 
 	/**
@@ -100,7 +100,7 @@ class UsersController extends AuthorizedController {
 	   	$data = ['user'=>$user,'acl'=>$acl];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.show')->data($data)->title('View User - Laravel Tasks'); 
+	   	return $this->view('admin.sentinel.users.show')->data($data)->title('View User'); 
 
 	}
 
@@ -363,6 +363,8 @@ class UsersController extends AuthorizedController {
 	 */
 	public function dashboard() {
 
+		//dd ($this->user);
+
 		// Set return data 
 	   	$user = $this->user;
 
@@ -379,7 +381,7 @@ class UsersController extends AuthorizedController {
 
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->scripts($scripts)->title('User Profile - Laravel Users'); 
+	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->scripts($scripts)->title('User Dashboard'); 
 	}
 
 }

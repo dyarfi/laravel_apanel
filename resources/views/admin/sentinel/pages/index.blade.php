@@ -15,9 +15,6 @@
 <div class="pull-right">
 	{!! $pages->render() !!}
 </div>
-
-<br><br>
-
 <table class="table table-bordered table-hover">
 	<thead>
 		<th class="col-lg-3">Name</th>

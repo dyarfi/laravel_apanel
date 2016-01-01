@@ -21,10 +21,23 @@ class AppServiceProvider extends ServiceProvider {
 
 	        // $controller = class_basename($action['controller']);
 			$controller = class_basename($action);
+ 			 			
+	        if (str_contains($controller, 'Controller@')) {
 
-	        list($controller, $action) = explode('Controller@', $controller);
+	        	list($controller, $action) = explode('Controller@', $controller);
 
-	        $view->with(compact('controller', 'action'));
+	    	} else {
+
+				// list($controller, $action) = explode('@', $controller);
+				$controller = '';
+				$action = '';
+
+	    	}
+	        
+	       
+
+        	$view->with(compact('controller', 'action'));
+
 	    });
 	}
 

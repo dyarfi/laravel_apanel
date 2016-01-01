@@ -1,6 +1,6 @@
-@extends('layouts.master')
+@extends('admin.template')
 
-@section('content')
+@section('body')
 
 <h1>{{ $task->title }}</h1>
 <p class="lead">

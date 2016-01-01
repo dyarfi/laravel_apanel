@@ -1,11 +1,19 @@
 <?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
-use Request, Input, Validator, Redirect, Session;
+use Route, Request, Auth, Session, Redirect, Input, Validator, View;
+// Load other classes
+use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
 use App\Db\Task, App\Db\User;
 
-class TasksController extends AuthorizedController {
+class TasksController extends BaseAdmin {
+	/**
+	 * Holds the Sentinel Users repository.
+	 *
+	 * @var \Cartalyst\Sentinel\Users\EloquentUser
+	 */
+	protected $tasks;
 
 	/**
 	 * Create a new controller instance.
@@ -21,6 +29,9 @@ class TasksController extends AuthorizedController {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin');
 
+		// Load tasks and get repository data from database
+		$this->tasks = new Task;
+		
 	}
 	
 	/**
@@ -28,104 +39,27 @@ class TasksController extends AuthorizedController {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index() {
 
-		//$roles = $this->roles->paginate();
-		//$users = User::all()->;
-		//$tasks = Task::find(4)->user();
-
-
-		//dd($users);
-		//dd($tasks);
-		
 		// Set return data 
-	   	$tasks = Task::all();
+	   	$tasks = Input::get('path') === 'trashed' ? $this->tasks->onlyTrashed()->get() : $this->tasks->get();
 
-	   	// Set pagination path
-	   	//$tasks->setPath('tasks');
-
-	   	// Set data to return
-	   	$data = ['tasks'=>$tasks];
-
-	   	// Return data and view
-	   	return $this->view('admin.sentinel.tasks.index')->data($data)->title('Tasks - Laravel Tasks'); 
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		// Return view
-		return $this->view('tasks.create')->title('Create Tasks - Laravel Tasks');
-
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
+	   	// Get deleted count
+		$deleted = $this->tasks->onlyTrashed()->get()->count();		   
 		
-		// Default filename 
-		$fileName = '';
+	   	// Set data to return
+	   	$data = ['tasks' => $tasks,'deleted' => $deleted,'junked' => Input::get('path')];
 
-	  	// Default checker
-	  	$uploaded = 0;
-
-	  	// getting all of the post data
-		$catch= ['title'	=> $request->input('title'),
-				 'description'	=> $request->input('description')];
-
-		// setting up rules
-		$rules = ['title' => 'required',
-		          'description' => 'required']; 
-
-		// doing the validation, passing post data, rules and the messages
-  		$validator = Validator::make($catch, $rules);
-
-		if ($validator->fails()) {
-		    // send back to the page with the input data and errors
-		    return Redirect::to('tasks/create')->withInput()->withErrors($validator);
-		}
-	  	else {
-
-		    // checking file is valid.
-		    if ($request->file('image') && $request->file('image')->isValid()) {
-			      $destinationPath = public_path().'/uploads'; // upload path
-			      $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-			      $fileName = rand(11111,99999).'.'.$extension; // renaming image
-			      $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-			      $uploaded = 1;
-			      // sending back with message
-			      //Session::flash('success', 'Upload successfully'); 
-			      //return Redirect::to('tasks/create');
-		    } else {
-			      // sending back with error message.
-			      Session::flash('error', 'uploaded file is not valid');
-			      return Redirect::to('tasks/create');
-		    }
-
-		}
-			
-		// Get all request
-		$result = $request->all();	
-
-		// Slip image file
-		$result = is_array($result['image']) ? array_set($result, 'image', '') : array_set($result, 'image', $fileName);
-
-    	// Set to database if image is uploaded
-    	Task::create($result);			
-
-    	// Set session flash to user
-	    Session::flash('flash_message', 'Task successfully added!');
-
-	    return redirect()->back();
+	   	// Load needed scripts
+	   	$scripts = [
+	   				'dataTables'=> 'assets.admin/js/jquery.dataTables.min.js',
+	   				'dataTableBootstrap'=> 'assets.admin/js/jquery.dataTables.bootstrap.min.js',
+	   				'dataTableTools'=> 'assets.admin/js/dataTables.tableTools.min.js',
+	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js'
+	   				];
+	   	
+		// Return data and view
+	   	return $this->view('admin.sentinel.tasks.index')->data($data)->scripts($scripts)->title('Task List'); 
 	}
 
 	/**
@@ -137,116 +71,209 @@ class TasksController extends AuthorizedController {
 	public function show($id)
 	{
 		// Get data from database
-        $task = Task::findOrFail($id);
-
+        $task = $this->tasks->find($id);
+        	       
 		// Set data to return
 	   	$data = ['task'=>$task];
 
 	   	// Return data and view
-	   	return $this->view('tasks.show')->data($data)->title('View Tasks - Laravel Tasks'); 
+	   	return $this->view('admin.sentinel.tasks.show')->data($data)->title('View Task'); 
 
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * Show the form for creating new task.
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function create()
+	{
+		return $this->showForm('create');
+	}
+
+	/**
+	 * Handle posting of the form for creating new task.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function store()
+	{
+		return $this->processForm('create');
+	}
+
+	/**
+	 * Show the form for updating task.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return mixed
 	 */
 	public function edit($id)
-	{
-		$task = Task::findOrFail($id);
-
-	    return view('tasks.edit')->withTask($task);
+	{	
+		return $this->showForm('update', $id);
 	}
 
 	/**
-	 * Update the specified resource in storage.
+	 * Handle posting of the form for updating task.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function update($id, Request $request)
+	public function update($id)
 	{
-		// Get requested tasks
-	    $task = Task::findOrFail($id);
+		return $this->processForm('update', $id);
+	}
+	
+	/**
+	 * Remove the specified task.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function trash($id)
+	{
+		if ($task = $this->tasks->find($id))
+		{
+			// Add deleted_at and not completely delete
+			$task->delete();
 
-		// Default filename 
-		$fileName = '';
-
-	  	// Default checker
-	  	$uploaded = 0;
-
-	  	// getting all of the post data
-		$catch = ['title'	=> $request->input('title'),
-				 'description'	=> $request->input('description')];
-
-		// setting up rules
-		$rules = ['title' => 'required',
-		          'description' => 'required']; 
-
-		// doing the validation, passing post data, rules and the messages
-  		$validator = Validator::make($catch, $rules);
-
-  		//dd ($validator);
-
-		if ($validator->fails()) {
-
-		    // send back to the page with the input data and errors
-  		    return Redirect::to('tasks/'.$id.'/edit')->withInput()->withErrors($validator);
-		}
-	  	else {
-
-		    // checking file is valid.
-		    if ($request->file('image') && $request->file('image')->isValid()) {
-			      $destinationPath = public_path().'/uploads'; // upload path
-			      $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-			      $fileName = rand(11111,99999).'.'.$extension; // renaming image
-			      $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-			      $uploaded = 1;
-			      // sending back with message
-			      //Session::flash('success', 'Upload successfully'); 
-
-			      //return Redirect::to('tasks/create');
-		    }
-		    else {
-			      // sending back with error message.
-			      // Session::flash('error', 'uploaded file is not valid');
-			      // return Redirect::to('tasks/'.$id.'/edit');
-		    	  $fileName = old('image');
-		    }
-
+			// Redirect with messages
+			return Redirect::to(route('admin.tasks.index'))->with('success', 'Task Trashed!');
 		}
 
-		// Get all request
-		$result = $request->all();	
-		
-		// Slip image file
-		$result = array_set($result, 'image', $fileName);
-
-	    $task->fill($result)->save();
-
-	    Session::flash('flash_message', 'Task successfully update!');
-
-
-	    return redirect()->back();
+		return Redirect::to(route('admin.tasks.index'))->with('error', 'Task Not Found!');
 	}
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Restored the specified task.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function destroy($id)
+	public function restored($id)
 	{
-	    $task = Task::findOrFail($id);
+		if ($task = $this->tasks->onlyTrashed()->find($id))
+		{
+			
+			// Restored back from deleted_at database
+			$task->restore();
+			
+			// Redirect with messages
+			return Redirect::to(route('admin.tasks.index'))->with('success', 'Task Restored!');
+		}
 
-	    $task->delete();
-
-	    Session::flash('flash_message', 'Task successfully deleted!');
-
-	    return redirect()->route('tasks.index');
+		return Redirect::to(route('admin.tasks.index'))->with('error', 'Task Not Found!');;
 	}
+
+	/**
+	 * Delete the specified task.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function delete($id)
+	{
+		if ($task = $this->tasks->onlyTrashed()->find($id))
+		{
+
+			// Completely delete from database
+			$task->forceDelete();
+
+			// Redirect with messages
+			return Redirect::to(route('admin.tasks.index'))->with('success', 'Task Permanently Deleted!');
+		}
+
+		return Redirect::to(route('admin.tasks.index'))->with('error', 'Task Not Found!');
+	}
+
+	/**
+	 * Shows the form.
+	 *
+	 * @param  string  $mode
+	 * @param  int     $id
+	 * @return mixed
+	 */
+	protected function showForm($mode, $id = null)
+	{	
+
+		if ($id)
+		{
+			if ( ! $task = $this->tasks->find($id))
+			{
+				return Redirect::to(route('admin.tasks.index'))->withErrors('Not found data!');;
+			}
+		}
+		else
+		{
+			$task = $this->tasks;
+		}
+
+		return $this->view('admin.sentinel.tasks.form')->data(compact('mode', 'task'))->title('Task '.$mode);
+	}
+
+	/**
+	 * Processes the form.
+	 *
+	 * @param  string  $mode
+	 * @param  int     $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	protected function processForm($mode, $id = null)
+	{
+		$input = array_filter(Input::all());
+		//$input['slug'] = isset($input['name']) ? snake_case($input['name']) : '';
+
+		$rules = [
+			'name' 		   => 'required',
+			'description'  => 'required',
+			'value'  	   => 'required',
+			'status'	   => 'boolean'
+		];
+
+		if ($id)
+		{
+			$task = $this->tasks->find($id);
+
+			$messages = $this->validateTask($input, $rules);
+
+			if ($messages->isEmpty())
+			{
+				$task->update($input);
+			}
+
+		}
+		else
+		{
+			$messages = $this->validateTask($input, $rules);
+
+			if ($messages->isEmpty())
+			{
+				$task = $this->tasks->create($input);
+			}
+		}
+
+		if ($messages->isEmpty())
+		{
+			return Redirect::to(route('admin.tasks.index'))->with('success', 'Task Updated!');
+		}
+
+		return Redirect::back()->withInput()->withErrors($messages);
+	}
+
+	/**
+	 * Validates a task.
+	 *
+	 * @param  array  $data
+	 * @param  mixed  $id
+	 * @return \Illuminate\Support\MessageBag
+	 */
+	protected function validateTask($data, $rules)
+	{
+		$validator = Validator::make($data, $rules);
+
+		$validator->passes();
+
+		return $validator->errors();
+	}
+
 
 }

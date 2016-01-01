@@ -204,7 +204,7 @@ return [
 		'Str'       => 'Illuminate\Support\Str',		
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
-		// Socialite for socila signin
+		// Socialite for social signin
 		'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 		// Sentinel user groups permission
 		//'Activation' => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
@@ -213,7 +213,9 @@ return [
 		'Activation'      => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
 		'Auth'            => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 		'Reminder'        => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
-		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel'
+		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
+		 // Simple PHP API extension for DateTime. [http://carbon.nesbot.com](http://carbon.nesbot.com)
+		'Carbon'		 => 'Carbon\Carbon'
 		
 	],
 

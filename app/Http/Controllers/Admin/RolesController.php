@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
 use App\Db\Role;
 
-class RolesController extends AuthorizedController {
+class RolesController extends BaseAdmin {
 
 	/**
 	 * Holds the Sentinel Roles repository.
@@ -46,7 +46,7 @@ class RolesController extends AuthorizedController {
 	{
 
 		// Set return data 
-	   	$roles = Input::get('path') === 'trashed' ? Role::onlyTrashed()->paginate(4) : Role::paginate(4);
+	   	$roles = Input::get('path') === 'trashed' ? Role::onlyTrashed()->paginate(10) : Role::paginate(10);
 
 	   	// Get deleted count
 		$deleted = Role::onlyTrashed()->get()->count();

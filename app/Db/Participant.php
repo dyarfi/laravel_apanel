@@ -29,12 +29,12 @@ class Participant extends Model implements AuthenticatableContract, CanResetPass
 	protected $fillable = [
 			'provider_id',
 			'provider',
-			'profile_url'
-			'photo_url'
+			'profile_url',
+			'photo_url',
 			'name',
 			'username',
 			'email',
-			'password'
+			'password',
 			'avatar',
 			'about',
 			'phone_number',

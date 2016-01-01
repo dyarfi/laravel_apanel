@@ -42,7 +42,7 @@ class Authenticate {
 			{
 				//return redirect()->guest('auth/login');
 				//return redirect()->guest('apanel/users');
-				return redirect()->guest('apanel/dashboard');
+				return redirect()->guest('auth/login');
 			}
 		}
 

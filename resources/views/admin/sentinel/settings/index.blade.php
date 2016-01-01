@@ -12,7 +12,6 @@
 </div>
 @endif
 @if ($settings->count())
-<br><br>
 <div class="row">
 	<div class="col-xs-12">		
 		<div class="clearfix">
@@ -76,12 +75,13 @@
 			    <td colspan="8">
 				<div id="selection" class="input-group">
 				    <div class="form-group form-group-sm">
-						<label class="col-xs-6 control-label small grey" for="select_action"> Change status : </label>
+						<label class="col-xs-6 control-label small grey" for="select_action">Change status :</label>
 						<div class="col-xs-6" id="select_action">
 						<select id="select_action" class="form-control input-sm" name="select_action">
-							<option value=""> </option>
-							<option value="1"> Active </option>
-							<option value="2"> Inactive </option>
+							<option value=""></option>
+							@foreach (config('setting.status') as $config => $val)
+								<option value="{{$val}}">{{$config}}</option>
+							@endforeach
 						</select>
 						</div>
 				      </div>

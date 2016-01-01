@@ -60,7 +60,7 @@
 			</div>
 			@endif
 			<span class="label label-info"><span class="fa fa-key"></span> {!! link_to_route('admin.permissions.edit', 'Access Permission', ['id'=>$role->id,'access=role'], ['class'=>'white']) !!}</span>
-			<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
+			<span class="help-block">{{{ $errors->first('permissions', ':message') }}}</span>
 		</div>
 	</div>
 	

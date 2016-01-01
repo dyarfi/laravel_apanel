@@ -5,9 +5,9 @@ use Route, Request, Auth, Session, Redirect, Input, Validator, View;
 // Load other classes
 use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
-use App\Db\setting, App\Db\User;
+use App\Db\Setting, App\Db\User;
 
-class SettingsController extends AuthorizedController {
+class SettingsController extends BaseAdmin {
 	/**
 	 * Holds the Sentinel Users repository.
 	 *
@@ -102,7 +102,7 @@ class SettingsController extends AuthorizedController {
 	   	$data = ['setting'=>$setting];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.settings.show')->data($data)->title('View Setting - Laravel Tasks'); 
+	   	return $this->view('admin.sentinel.settings.show')->data($data)->title('View Setting'); 
 
 	}
 

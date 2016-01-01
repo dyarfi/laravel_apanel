@@ -1,191 +1,172 @@
 <?php namespace App\Http\Controllers\Admin;
 
-// Load Laravel classes
-use Illuminate\Foundation\Bus\DispatchesCommands;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Request, Session, Input, URL, View;
+// Load Laravel classes and Sentinel classes
+use Request, Redirect, Response, View, Route;
+use Sentinel, Artisan, Session;
+// User for debugging
+use Event;
 
-abstract class BaseAdmin extends BaseController {
+class BaseAdmin extends ThemeAdmin {
 
-	//use DispatchesCommands, ValidatesRequests;
+	// Get current class basename
+	public $class_name = '';
+
+	// get current action basename
+	public $action_name = '';
+
+	// Get user data via sentinel auth
+	public $user = '';
+
+	// Constructor
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->user = Sentinel::getUser();
+
+	}
+
+
+	public function index() {
+
+		return $this->unauthorize();
+
+	}
 
 	/**
-	* Master layout
-	* @var string
-	*/
-		//protected $layout = 'admin.layouts.master';
-		protected $layout = 'admin.template';
-	 
-	 /**
-	* View to render
-	* @var string
-	*/
-		protected $view;
-	 
-	 /**
-	* Array of data passed to view
-	* @var array
-	*/
-		protected $data = array();
-	 
-	 /**
-	* Subview to render
-	* @var string
-	*/
-		protected $subview;
-	 
-	 /**
-	* Array of data to be passed to subview
-	* @var array
-	*/
-		protected $subdata = array();
-	 
-	 /**
-	* Page title
-	* @var string
-	*/
-		protected $title;
+	 * Holds the Page for Unauthorized access.
+	 *
+	 * @var \Http\Controllers\Admin\AuthorizedController
+	 * @return view
+	 */
+	public function unauthorize () {
 
-	 /**
-	* Page scripts
-	* @var string
-	*/
-		protected $scripts = array();
-	 
-	 /**
-	* Page styles
-	* @var string
-	*/
-		protected $styles = array();
-	 
-	 /**
-	* Set default subview layout
-	* @param string $sublayout
-	*/
-	 public function __construct($sublayout = null)
-	 {	 	
-		$this->view = $sublayout;		
-	 }
-	 
-	 /**
-	* Set view to render
-	* @param string $view
-	* @return self
-	*/
-	 protected function view($view)
-	 {
-		$this->view = $view;
-	 	return $this;
-	 }
-	 
-	 /**
-	* Set data to pass to view
-	* @param array $data
-	* @return self
-	*/
-	 protected function data(array $data)
-	 {
-		$this->data = $data;
-	 	return $this;
-	 }
-	 
-	 /**
-	* Set subview to render
-	* @param string $subview
-	* @return self
-	*/
-	 protected function subview($subview)
-	 {
-		$this->subview = $subview;
-	 	return $this;
-	 }
-	 
-	 /**
-	* Set data to pass to subview
-	* @param array $subdata
-	* @return self
-	*/
-	 protected function subdata(array $subdata)
-	 {
-		$this->subdata = $subdata;
-	 	return $this;
-	 }
-	 
-	 /**
-	* Set page title
-	* @param string $title
-	* @return Response
-	*/
-	 protected function title($title)
-	 {
-		 $this->title = $title;
+		// Check if the sentinel login os still existed
+		if ( Sentinel::check() ) {
 
-		 // title method must be called last so it can call the render method
-		 // this allows us to skip calling the render method
-		 return $this->render();
-	 }
+			// Check if ajax requested
+			if ( Request::ajax()) {
 
-	 /**
-	* Set page script
-	* @param string $script
-	* @return Response
-	*/
-	 protected function scripts(array $scripts)
-	 {
-		 	 	
-		 // Define scripts variables 	 	
-		 $this->scripts = $scripts;
-		 // append subview data to view data
-		 $this->data['scripts'] = $this->scripts;
+				return Response::json([ 'error' => 403 , 'message' => 'Unauthorized action.' ], 403);
 
-		 return $this;
-	 }
+				// return redirect()->back()->withInput()->withErrors('Unauthorized access!');
+				// return abort(403);
+				// return abort(403, 'Unauthorized action.');
+				// return Redirect::back()->withInput()->withErrors('Unauthorized access!');
+				
+			}			
 
-	 /**
-	* Set page style
-	* @param string $style
-	* @return Response
-	*/
-	 protected function styles(array $styles)
-	 {
-		 	 	
-		 // Define styles variables 	 	
-		 $this->styles = $styles;
-		 // append subview data to view data
-		 $this->data['styles'] = $this->styles;
+			// Return no access view
+			return View::make('admin.errors.noaccess');
 
-		 return $this;
-	 }
-	 
-	 /**
-	* Render the subview
-	* @return Response
-	*/
-	 private function rendersubview()
-	 {
-		 $this->subview = array('subview' => View::make($this->subview)->with($this->subdata));
-	 
-		 // append subview data to view data
-		 return $this->data = $this->data + $this->subview;
-	 }
-	 
-	 /**
-	* Render the view
-	* @return Response
-	*/
-	 private function render()
-	 {
-		// render subview if subview is passed
-		(is_null($this->subview)) ? : $this->rendersubview();
+		} else {
+
+			// Return redirect back to login page if not logged by sentinel
+			return Redirect::to(route('admin.login'))->withErrors('Unauthorized access!');
+
+		}
 		
-		// render the view
-		return View::make($this->layout)
-		->nest('content', $this->view, $this->data)
-		->with('scripts', $this->scripts)
-		->with('styles', $this->styles)
-		->with('title', $this->title)
-		;
-	 }
+	}
+    
+
+    /**
+    * First time setup for developers only
+    * @var should be HTTP Basic Authenticate
+    * @return view
+    */
+	public function setup() {
+
+		// Default variable setup
+		$exitCode = ''; 
+		$message = '';
+		$user = '';
+
+		// Check post parameters
+		if (Request::has('email') && Request::has('password')) {
+
+			// Check first by email on database
+			$user_check = Sentinel::findByCredentials(['login' => Request::input('email')]);
+
+			// Check user
+			if (!$user_check) {
+				
+
+				$set_acl = [];
+
+				foreach (config('setting.acl') as $acl) {
+					if (isset($acl['Admin'])) {
+						$set_acl = array_flatten($acl['Admin']);
+					}	
+				}
+
+				$set_acl = array_fill_keys($set_acl,true);
+
+				$is_admin = Request::input('is_admin') == 1 ? $set_acl : [];
+				
+				$credentials = [
+				    'email'    => Request::input('email'),
+				    'password' => Request::input('password'),
+				    'permissions' => $is_admin,
+				];
+
+				$user = Sentinel::create($credentials);
+
+				if ($is_admin) {
+
+					$role = Sentinel::findRoleByName('Admin');
+
+					if (!$role) {
+
+						$role = Sentinel::getRoleRepository()->createModel()->create([
+						    'name' => 'Admin',
+						    'slug' => 'admin',
+						    'permissions' => ['admin' => true]
+						]);
+					}
+
+					$role->users()->attach($user);
+
+				}
+
+			} else {
+
+				// Set message
+				$message = $user .' Already Existed!';
+			}
+
+			if ($user) {
+
+				// Set message
+				$message = $user->email .' Created!';
+			}
+
+			if (Request::input('migrate') == 1) {
+
+				// Call php artisan command
+				$exitCode = Artisan::call('migrate');
+
+			}
+
+
+		}
+
+		//$message = ($exitCode == 0) ? '' : $exitCode . 'Migrate Successfully!';
+
+		if ($message) {
+			// Flash a key / value pair to the session
+	 		//Session::flash('success', $message .' '. $exitCode > 0 ? '- '. $exitCode .' migration' : 'But no migration');
+	 		Session::flash('success', $message);		
+		}
+ 		// Forget the message
+ 		//Session::forget('success');
+
+ 		 // Set layout template
+ 		$this->layout = 'admin.template_login';
+
+		// Return no access view
+		return $this->view('admin.sentinel.account.first_time')->title('First Setup and Migrate!');
+
+	}
+
 
 }

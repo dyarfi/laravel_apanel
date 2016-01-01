@@ -3,16 +3,16 @@
 // Load Laravel classes
 use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View;
 // Load main models
-use App\Db\Role, App\Db\User;
+use App\Db\Role, App\Db\Participant;
 
-class ParticipantsController extends AuthorizedController {
+class ParticipantsController extends BaseAdmin {
 
 	/**
-	 * Holds the Sentinel Users repository.
+	 * Holds the Sentinel Participants repository.
 	 *
-	 * @var \Cartalyst\Sentinel\Users\EloquentUser
+	 * @var \Cartalyst\Sentinel\Participants\EloquentParticipant
 	 */
-	protected $users;
+	public $participants;
 
 	/**
 	 * Create a new controller instance.
@@ -26,54 +26,62 @@ class ParticipantsController extends AuthorizedController {
 		parent::__construct();
 		
 		// Load Http/Middleware/Admin controller
-		$this->middleware('auth.admin',['except'=>'profile']);
+		$this->middleware('auth.admin');
 
-		// Load users and get repository data from Sentinel
-		$this->users = new User;
+		// Load participants and get repository data from Sentinel
+		$this->participants = new Participant;
 
-		$this->roles = new Role;
+		//$this->roles = new Role;
 
 	}
 
 	/**
-	 * Display a listing of users.
+	 * Display a listing of participants.
 	 *
 	 * @return \Illuminate\View\View
 	 */
 	public function index()
 	{
 
-	   	//dd ($this->users->find(1)->roles);
-
+	   	//dd ($this->participants->find(1)->roles);
+		
 		// Set return data 
-	   	$users = Input::get('path') === 'trashed' ? $this->users->onlyTrashed()->paginate(4) : $this->users->paginate(4);
+	   	$participants = Input::get('path') === 'trashed' ? $this->participants->onlyTrashed()->paginate(4) : $this->participants->paginate(4);
 
 	   	// Get deleted count
-		$deleted = $this->users->onlyTrashed()->get()->count();
+		$deleted = $this->participants->onlyTrashed()->get()->count();
 	   	
 	   	// Set data to return
-	   	$data = ['users'=>$users,'deleted'=>$deleted,'junked'=>Input::get('path')];
+	   	$data = ['participants'=>$participants,'deleted'=>$deleted,'junked'=>Input::get('path')];
 
-	   	return $this->view('admin.sentinel.users.index')->data($data)->title('User List');
+  		// Load needed scripts
+	   	$scripts = [
+	   				'dataTables'=> 'assets.admin/js/jquery.dataTables.min.js',
+	   				'dataTableBootstrap'=> 'assets.admin/js/jquery.dataTables.bootstrap.min.js',
+	   				'dataTableTools'=> 'assets.admin/js/dataTables.tableTools.min.js',
+	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js'
+	   				];
+
+	   	return $this->view('admin.sentinel.participants.index')->data($data)->scripts($scripts)->title('Participants List');
 	}	
 	
 	/**
-	 * Display user profile of the resource.
+	 * Display participant profile of the resource.
 	 *
 	 * @return Response
 	 */
 	public function profile() {
 
 		// Set return data 
-	   	//$user = Sentinel::getUser();
-	   	$user = $this->user;	
-	   	//dd($user);
+	   	//$participant = Sentinel::getParticipant();
+	   	//$participant = $this->participant;	
+	   	//dd($participant);
 
 	   	// Set data to return
-	   	$data = ['user'=>$user];
+	   	$data = ['participant'=>$participant];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.profile')->data($data)->title('User Profile - Laravel Users'); 
+	   	return $this->view('admin.sentinel.participants.profile')->data($data)->title('Participant Profile'); 
 	}
 
 	/**
@@ -85,24 +93,18 @@ class ParticipantsController extends AuthorizedController {
 	public function show($id)
 	{
 		// Get data from database
-        $user = $this->users->findOrFail($id);
+        $participant = $this->participants->findOrFail($id);
 
-        // Change permissions data to array 
-        $user->permissions = json_decode($user->permissions, true);
-
-        // Read ACL settings config for any permission access
-        $acl = config('setting.acl');
-        	               	       
 		// Set data to return
-	   	$data = ['user'=>$user,'acl'=>$acl];
+	   	$data = ['participant'=>$participant,'acl'=>$acl];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.show')->data($data)->title('View User - Laravel Tasks'); 
+	   	return $this->view('admin.sentinel.participants.show')->data($data)->title('View Participant'); 
 
 	}
 
 	/**
-	 * Show the form for creating new user.
+	 * Show the form for creating new participant.
 	 *
 	 * @return \Illuminate\View\View
 	 */
@@ -112,7 +114,7 @@ class ParticipantsController extends AuthorizedController {
 	}
 
 	/**
-	 * Handle posting of the form for creating new user.
+	 * Handle posting of the form for creating new participant.
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
@@ -122,7 +124,7 @@ class ParticipantsController extends AuthorizedController {
 	}
 
 	/**
-	 * Show the form for updating user.
+	 * Show the form for updating participant.
 	 *
 	 * @param  int  $id
 	 * @return mixed
@@ -133,7 +135,7 @@ class ParticipantsController extends AuthorizedController {
 	}
 
 	/**
-	 * Handle posting of the form for updating user.
+	 * Handle posting of the form for updating participant.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
@@ -144,48 +146,48 @@ class ParticipantsController extends AuthorizedController {
 	}
 
 	/**
-	 * Remove the specified user.
+	 * Remove the specified participant.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function trash($id)
 	{
-		if ($user = $this->users->find($id))
+		if ($participant = $this->participants->find($id))
 		{
 			
 			// Add deleted_at and not completely delete
-			$user->delete();
+			$participant->delete();
 			
 			// Redirect with messages
-			return Redirect::to(route('admin.users.index'))->with('success', 'User Trashed!');
+			return Redirect::to(route('admin.participants.index'))->with('success', 'Participant Trashed!');
 		}
 
-		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
+		return Redirect::to(route('admin.participants.index'))->with('error', 'Participant Not Found!');
 	}
 
 	/**
-	 * Restored the specified user.
+	 * Restored the specified participant.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function restored($id)
 	{
-		if ($user = $this->users->onlyTrashed()->find($id))
+		if ($participant = $this->participants->onlyTrashed()->find($id))
 		{
 
 			// Restored back from deleted_at database
-			$user->restore();
+			$participant->restore();
 
 			// Redirect with messages
-			return Redirect::to(route('admin.users.index'))->with('success', 'User Restored!');
+			return Redirect::to(route('admin.participants.index'))->with('success', 'Participant Restored!');
 		}
 
-		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
+		return Redirect::to(route('admin.participants.index'))->with('error', 'Participant Not Found!');
 	}
 	/**
-	 * Remove the specified user.
+	 * Remove the specified participant.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
@@ -193,20 +195,20 @@ class ParticipantsController extends AuthorizedController {
 	public function delete($id)
 	{
 
-		// Get user from id fetch
-		if ($user = $this->users->onlyTrashed()->find($id))
+		// Get participant from id fetch
+		if ($participant = $this->participants->onlyTrashed()->find($id))
 		{
 
 			// Delete from pivot table many to many
-			$this->users->onlyTrashed()->find($id)->roles()->detach();
+			$this->participants->onlyTrashed()->find($id)->roles()->detach();
 
 			// Permanently delete
-			$user->forceDelete();
+			$participant->forceDelete();
 
-			return Redirect::to(route('admin.users.index'))->with('success', 'User Permanently Deleted!');
+			return Redirect::to(route('admin.participants.index'))->with('success', 'Participant Permanently Deleted!');
 		}
 
-		return Redirect::to(route('admin.users.index'))->with('error', 'User Not Found!');
+		return Redirect::to(route('admin.participants.index'))->with('error', 'Participant Not Found!');
 	}
 
 	/**
@@ -221,19 +223,17 @@ class ParticipantsController extends AuthorizedController {
 
 		if ($id)
 		{		
-			if ( ! $user = $this->users->find($id))
+			if ( ! $participant = $this->participants->find($id))
 			{
-				return Redirect::to(route('admin.users'));
+				return Redirect::to(route('admin.participants'));
 			}
 		}
 		else
 		{
-			$user = Sentinel::getUserRepository()->createModel();
+			$participant = $this->participants;
 		}
-
-		$roles = $this->roles->lists('name', 'id');
-
-		return $this->view('admin.sentinel.users.form')->data(compact('mode', 'user', 'roles'))->title('User '.$mode);
+		
+		return $this->view('admin.sentinel.participants.form')->data(compact('mode', 'participant'))->title('Participant '.$mode);
 	}
 
 	/**
@@ -251,32 +251,32 @@ class ParticipantsController extends AuthorizedController {
 			'first_name' => 'required',
 			'last_name'  => 'required',
 			'role_id'  	 => 'required',			
-			'email'      => 'required|unique:users'
+			'email'      => 'required|unique:participants'
 		];
 		
 		if ($id)
 		{
-			$user = Sentinel::getUserRepository()->createModel()->find($id);
+			$participant = Sentinel::getParticipantRepository()->createModel()->find($id);
 
-			$rules['email'] .= ",email,{$user->email},email";
+			$rules['email'] .= ",email,{$participant->email},email";
 
-			$messages = $this->validateUser($input, $rules);
+			$messages = $this->validateParticipant($input, $rules);
 
 			if ($messages->isEmpty())
 			{
 
-				if ( ! $user->roles()->first() ) {
+				if ( ! $participant->roles()->first() ) {
 					
 					// Syncing relationship Many To Many // Create New
-					$user->roles()->sync(['role_id'=>$input['role_id']]);
+					$participant->roles()->sync(['role_id'=>$input['role_id']]);
 					
 				} else {
 
 					// Syncing relationship Many To Many // Update Existing
-					$user->roles()->sync(['role_id'=>$input['role_id']]);
+					$participant->roles()->sync(['role_id'=>$input['role_id']]);
 					
-					// Update user model data
-					Sentinel::getUserRepository()->update($user, $input);
+					// Update participant model data
+					Sentinel::getParticipantRepository()->update($participant, $input);
 
 				}
 				
@@ -285,38 +285,38 @@ class ParticipantsController extends AuthorizedController {
 		else
 		{
 			
-			$messages = $this->validateUser($input, $rules);
+			$messages = $this->validateParticipant($input, $rules);
 
 			if ($messages->isEmpty())
 			{
-				// Create user into the database
-				$user = Sentinel::getUserRepository()->create($input);
+				// Create participant into the database
+				$participant = Sentinel::getParticipantRepository()->create($input);
 				
 				// Syncing relationship Many To Many // Create New
-				$user->roles()->sync(['role_id'=>$input['role_id']]);
+				$participant->roles()->sync(['role_id'=>$input['role_id']]);
 
-				$code = Activation::create($user);
+				$code = Activation::create($participant);
 
-				Activation::complete($user, $code);
+				Activation::complete($participant, $code);
 			}
 		}
 
 		if ($messages->isEmpty())
 		{
-			return Redirect::to(route('admin.users.index'))->with('success', 'User Updated!');;
+			return Redirect::to(route('admin.participants.index'))->with('success', 'Participant Updated!');;
 		}
 
 		return Redirect::back()->withInput()->withErrors($messages);
 	}
 
 	/**
-	 * Validates a user.
+	 * Validates a participant.
 	 *
 	 * @param  array  $data
 	 * @param  mixed  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	protected function validateUser($data, $rules)
+	protected function validateParticipant($data, $rules)
 	{
 		$validator = Validator::make($data, $rules);
 
@@ -326,7 +326,7 @@ class ParticipantsController extends AuthorizedController {
 	}
 
 	/**
-	 * Show the dashboard for current users
+	 * Show the dashboard for current participants
 	 *
 	 * @param  null  
 	 * @return Response
@@ -334,15 +334,15 @@ class ParticipantsController extends AuthorizedController {
 	public function dashboard() {
 
 		// Set return data 
-	   	$user = $this->user;
+	   	$participant = $this->participant;
 
-	   	//dd($user);
+	   	//dd($participant);
 	   	
 	   	// Set data to return
-	   	$data = ['user'=>$user];
+	   	$data = ['participant'=>$participant];
 
 	   	// Return data and view
-	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->title('User Profile - Laravel Users'); 
+	   	return $this->view('admin.sentinel.participants.dashboard')->data($data)->title('Participant Dashboard'); 
 	}
 
 }

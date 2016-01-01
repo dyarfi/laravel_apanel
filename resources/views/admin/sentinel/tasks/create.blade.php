@@ -1,6 +1,6 @@
-@extends('layouts.master')
+@extends('admin.template')
 
-@section('content')
+@section('body')
 
 <h1>Add a New Task</h1>
 <p class="lead">Add to your task list below.</p>

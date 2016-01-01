@@ -9,7 +9,7 @@
         <li>
             @if ($role->permissions)
                 @foreach ($role->permissions as $permissions => $permission)
-                    [{{ ucfirst($permissions) }}] 
+                    [{{ ucfirst($permissions) }}:{!!$permission ? '<span class="text-success">true</span>' : '<span class="text-danger">false</span>'!!}] 
                 @endforeach
             @else
                 <span class="label label-danger label-sm">No Role</span>

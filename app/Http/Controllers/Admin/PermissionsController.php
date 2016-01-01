@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
 use App\Db\User, App\Db\Role, App\Db\Task;
 
-class PermissionsController extends AuthorizedController {
+class PermissionsController extends BaseAdmin {
 
 	/**
 	 * Holds the Sentinel permissions repository.
@@ -82,10 +82,16 @@ class PermissionsController extends AuthorizedController {
 			} else {
 
 				// Set empty permission
-				unset($user->permissions);
+				//unset($user->permissions);
+				//$user->removePermission('*.*')->save();
+				$user->permissions = [];
 
+				
 				// Save user data
 				$user->save();
+
+				//dd ($user->permissions);
+				
 
 			}
 
@@ -99,22 +105,38 @@ class PermissionsController extends AuthorizedController {
 
 			// Get user model
 	    	$role = Sentinel::findRoleById($id);
-		
+
 			// Check if value posted is not empty and array valued
 			if (is_array(Request::input('role_permission'))) {
 				
 				// Reset database column
 				unset($role->permissions);
 
+				//// remarks find a logic to mark admin to false {"admin":false} if not checked in form			
+				$request = Request::input('role_permission');
+
+				if(Request::has('role_permission.admin') == false) {
+
+					$request['admin'] = false;
+
+				} 
+										
+				ksort($request);
+
 				// Set Role Permissions
-				foreach (Request::input('role_permission') as $permission => $value) {
+				foreach ($request as $permission => $value) {
+
 					$role->updatePermission($permission, ($value) ? true : false, true)->save();
-				}
+
+				}	
 
 			} else {
 
-				// Set empty permission
-				unset($role->permissions);
+				// Set this to original model or sentinel would not update permissions
+				//$role = Role::findOrFail($id);
+
+				// Set permissions empty or admin with no value
+				$role->permissions = ['admin'=>false];
 
 				// Save role data
 				$role->save();

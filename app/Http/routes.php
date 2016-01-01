@@ -20,6 +20,26 @@ Route::get('/', [
     'uses' => 'PagesController@home'
 ]);
 
+
+// Public User routes ...
+//Route::get('user', 'UsersController@index');
+//Route::post('user/edit', 'UsersController@edit');
+//Route::get('user', 'UsersController@profile');
+//Route::get('profile', 'UsersController');
+//Route::get('profile/update', 'UsersController@update');
+
+//Route::get('profile', array('as' => 'profile', 'uses' => 'UsersController'));
+//Route::get('profile', array('as' => 'profile', 'uses' => 'UsersController@showProfile'));
+
+//Route::get('profile/edit', 'UsersController@edit');
+
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+
+//Route::get('auth/social',
+
 // Front routes endpoint resources
 Route::resource('tasks', 'TasksController');
 Route::resource('users', 'UsersController');
@@ -57,9 +77,12 @@ Route::group(['prefix' => $setting['admin_url']], function()
     // ******************* Shortcut for Developer Setup ******************** //
 
     // Get main administrator lgin
-    Route::get('setup/first/migrate', 'Admin\AuthorizedController@setup'); 
-    Route::post('setup/first/migrate', 'Admin\AuthorizedController@setup');    
+    Route::get('setup/first/migrate', 'Admin\BaseAdmin@setup');
+    Route::post('setup/first/migrate', 'Admin\BaseAdmin@setup');
 
+    // Get no access pages
+    Route::get('noaccess', ['as'=>'admin.noaccess','uses'=>'Admin\BaseAdmin@unauthorize']);
+    Route::get('noaccess', ['as'=>'admin.access.index','uses'=>'Admin\BaseAdmin@index']);
 
     // ******************* Auth\AuthAdminController ********************* { //
 
@@ -141,10 +164,7 @@ Route::group(['prefix' => $setting['admin_url']], function()
 
     // Get admin panel controllers routes
     Route::get('dashboard', 'Admin\UsersController@dashboard');
-
-    // Get no access pages
-    Route::get('noaccess', ['as'=>'admin.noaccess','uses'=>'Admin\AuthorizedController@unauthorized']);
-
+    
     // Pages Controller routes
     Route::get('pages', ['as'=>'admin.pages.index','uses'=>'Admin\PagesController@index']);
     Route::get('pages/create', ['as'=>'admin.pages.create','uses'=>'Admin\PagesController@create']);
@@ -167,8 +187,7 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('menus/{id}/restored', ['as'=>'admin.menus.restored','uses'=>'Admin\MenusController@restored']);
     Route::get('menus/{id}/delete', ['as'=>'admin.menus.delete','uses'=>'Admin\MenusController@delete']);
 
-
-    // Pages Controller routes
+    // Tasks Controller routes
     Route::get('tasks', ['as'=>'admin.tasks.index','uses'=>'Admin\TasksController@index']);
     Route::get('tasks/create', ['as'=>'admin.tasks.create','uses'=>'Admin\TasksController@create']);
     Route::post('tasks/create', ['as'=>'admin.tasks.store','uses'=>'Admin\TasksController@store']);
@@ -178,6 +197,17 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('tasks/{id}/trash', ['as'=>'admin.tasks.trash','uses'=>'Admin\TasksController@trash']);    
     Route::get('tasks/{id}/restored', ['as'=>'admin.tasks.restored','uses'=>'Admin\TasksController@restored']);
     Route::get('tasks/{id}/delete', ['as'=>'admin.tasks.delete','uses'=>'Admin\TasksController@delete']);
+
+    // Participants Controller routes
+    Route::get('participants', ['as'=>'admin.participants.index','uses'=>'Admin\ParticipantsController@index']);
+    Route::get('participants/create', ['as'=>'admin.participants.create','uses'=>'Admin\ParticipantsController@create']);
+    Route::post('participants/create', ['as'=>'admin.participants.store','uses'=>'Admin\ParticipantsController@store']);
+    Route::get('participants/{id}/show', ['as'=>'admin.participants.show', 'uses'=>'Admin\ParticipantsController@show']);
+    Route::get('participants/{id}', ['as'=>'admin.participants.edit','uses'=>'Admin\ParticipantsController@edit']);
+    Route::post('participants/{id}', ['as'=>'admin.participants.update','uses'=>'Admin\ParticipantsController@update']);
+    Route::get('participants/{id}/trash', ['as'=>'admin.participants.trash','uses'=>'Admin\ParticipantsController@trash']);    
+    Route::get('participants/{id}/restored', ['as'=>'admin.participants.restored','uses'=>'Admin\ParticipantsController@restored']);
+    Route::get('participants/{id}/delete', ['as'=>'admin.participants.delete','uses'=>'Admin\ParticipantsController@delete']);
 
 });
 
@@ -215,17 +245,12 @@ Route::get('users/show/{id}', [
 Route::get('users', [
     'as' => 'users.index', 'uses' => 'UsersController@index'
 ]);
-
 Route::get('users/create', [
     'as' => 'users.create', 'uses' => 'UsersController@create'
 ]);
-
 Route::get('users/destroy', [
     'as' => 'users.destroy', 'uses' => 'UsersController@destroy'
 ]);
-*/
-
-/*
 Route::get('profile', [
     'as' => 'profile', 'uses' => 'UsersController@profile'
 ]);
@@ -241,27 +266,6 @@ Route::get('auth/social', 'AuthSocialController@handleProviderCallback');
 //Route::get('login/{provider}', 'Auth\AuthController@login');
 
 //Route::resource('auth', 'AuthController');
-
-
-
-// User routes ...
-//Route::get('user', 'UsersController@index');
-//Route::post('user/edit', 'UsersController@edit');
-//Route::get('user', 'UsersController@profile');
-//Route::get('profile', 'UsersController');
-//Route::get('profile/update', 'UsersController@update');
-
-//Route::get('profile', array('as' => 'profile', 'uses' => 'UsersController'));
-//Route::get('profile', array('as' => 'profile', 'uses' => 'UsersController@showProfile'));
-
-//Route::get('profile/edit', 'UsersController@edit');
-/*
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
-*/
-//Route::get('auth/social',
 
 Route::get('wait', function()
 {

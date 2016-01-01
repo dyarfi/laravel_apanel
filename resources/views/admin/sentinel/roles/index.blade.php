@@ -12,13 +12,12 @@
 @endif
 @if ($roles->count())
 <small class="grey">@if ($roles->count()) Page {{ @$roles->currentPage() }} of {{ @$roles->lastPage() }} @endif</small>
-<br><br>
 <table class="table table-bordered table-hover">
 	<thead>
 		<th class="col-lg-2">Name</th>
 		<th class="col-lg-2">Slug</th>
-		<th class="col-lg-2">Permission</th>
-		<th class="col-lg-4">Access</a>
+		<th class="col-lg-1">Permission</th>
+		<th class="col-lg-5">Access Page</a>
 		<th class="col-lg-4">Actions</th>
 	</thead>
 	<tbody>
@@ -32,10 +31,18 @@
 				: '<span class="label label-danger arrowed-in arrowed-in-right"><span class="fa fa-ban fa-sm"></span> General</span>' !!}</td>
 			<td>			
 				<span class="label label-info">
-					@if(is_array($role->permissions))
+					@if(!empty($role->permissions['admin']) && $role->permissions['admin'] == true)
 						[{{ ucwords(implode(', ', array_keys($role->permissions))) }}]
 					@else
-						NO ACCESS	
+						NO ADMIN
+						@if(is_array($role->permissions) && count($role->permissions) > 1)
+							-
+							@foreach($role->permissions as $permission => $access)
+								@if ($access === true)
+									[{{ ucwords($permission) }}]
+								@endif
+							@endforeach
+						@endif
 					@endif
 				</span>
 			</td>	

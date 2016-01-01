@@ -9,7 +9,6 @@
 
 @if ($permissions->count())
 <div class="pull-right"></div>
-<br><br>
 <table class="table table-bordered table-hover">
 	<thead>
 		<th class="col-lg-3">Name</th>

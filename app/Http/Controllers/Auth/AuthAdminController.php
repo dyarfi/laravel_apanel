@@ -93,8 +93,8 @@ class AuthAdminController extends Controller {
 			if (Sentinel::authenticate(Input::all(), $remember))
 			{
 				return Redirect::intended($this->admin_url.'/dashboard');
-			}
-
+			}			
+			
 			$errors = 'Invalid login or password.';
 		}
 		catch (NotActivatedException $e)
