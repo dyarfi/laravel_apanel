@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
-use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View;
+use Route, Request, Session, Redirect, Auth, Activation, Socialite, Input, Validator, View;
 // Load main models
 use App\Db\Role, App\Db\Participant;
 
@@ -28,7 +28,7 @@ class ParticipantsController extends BaseAdmin {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin');
 
-		// Load participants and get repository data from Sentinel
+		// Load participants and get repository data from Auth
 		$this->participants = new Participant;
 
 		//$this->roles = new Role;
@@ -73,7 +73,7 @@ class ParticipantsController extends BaseAdmin {
 	public function profile() {
 
 		// Set return data 
-	   	//$participant = Sentinel::getParticipant();
+	   	//$participant = Auth::getParticipant();
 	   	//$participant = $this->participant;	
 	   	//dd($participant);
 
@@ -96,7 +96,7 @@ class ParticipantsController extends BaseAdmin {
         $participant = $this->participants->findOrFail($id);
 
 		// Set data to return
-	   	$data = ['participant'=>$participant,'acl'=>$acl];
+	   	$data = ['participant'=>$participant];
 
 	   	// Return data and view
 	   	return $this->view('admin.sentinel.participants.show')->data($data)->title('View Participant'); 
@@ -256,7 +256,7 @@ class ParticipantsController extends BaseAdmin {
 		
 		if ($id)
 		{
-			$participant = Sentinel::getParticipantRepository()->createModel()->find($id);
+			$participant = Auth::getParticipantRepository()->createModel()->find($id);
 
 			$rules['email'] .= ",email,{$participant->email},email";
 
@@ -276,7 +276,7 @@ class ParticipantsController extends BaseAdmin {
 					$participant->roles()->sync(['role_id'=>$input['role_id']]);
 					
 					// Update participant model data
-					Sentinel::getParticipantRepository()->update($participant, $input);
+					Auth::getParticipantRepository()->update($participant, $input);
 
 				}
 				
@@ -290,7 +290,7 @@ class ParticipantsController extends BaseAdmin {
 			if ($messages->isEmpty())
 			{
 				// Create participant into the database
-				$participant = Sentinel::getParticipantRepository()->create($input);
+				$participant = Auth::getParticipantRepository()->create($input);
 				
 				// Syncing relationship Many To Many // Create New
 				$participant->roles()->sync(['role_id'=>$input['role_id']]);

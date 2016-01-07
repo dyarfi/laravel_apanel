@@ -23,6 +23,7 @@
 				<tr>
 					<th class="center"><label class="pos-rel"><input type="checkbox" class="ace" /><span class="lbl"></span></label></th>
 					<th class="col-lg-3">Provider</th>
+					<!-- <th class="col-lg-3">Profile Url</th>					 -->
 					<th class="col-lg-2">Name</th>
 					<th class="col-lg-3">Email</th>
 					<th class="col-lg-2">Join Date</th>	
@@ -38,7 +39,8 @@
 							<span class="lbl"></span>
 						</label>
 					</td>					
-					<td>{{ $user->provider }}</td>		        	
+					<td>{{ $user->provider }}</td>		       
+					<!-- <td>{{ $user->profile_url }}</td> -->
 					<td>{{ $user->name }} </td>
 					<td>{{ $user->email }}</td>
 					<td>

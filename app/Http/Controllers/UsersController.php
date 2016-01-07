@@ -11,7 +11,7 @@ use Session;
 
 //use Socialite;
 
-class UsersController extends Controller {
+class UsersController extends BasePublic {
 
 	/**
 	 * Create a new controller instance.

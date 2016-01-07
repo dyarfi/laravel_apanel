@@ -140,6 +140,9 @@ return [
 	 	],
 	 	['show_email' => 
 	 		['Yes' => 1, 'No' => 0]
+	 	],	 	
+	 	['show_profile' => 
+	 		['Yes' => 1, 'No' => 0]
 	 	],
 	
 	/*	 

@@ -7,7 +7,7 @@ use Request, Input, Validator, Redirect, Session;
 // Load main models
 use App\Db\Task;
 
-class TasksController extends Controller {
+class TasksController extends BasePublic {
 
 	/**
 	 * Create a new controller instance.

@@ -268,7 +268,7 @@ class PermissionsController extends BaseAdmin {
 		// Read ACL settings config for any permission access
     	$acl = config('setting.acl');
 	               	      
-		return $this->view('admin.sentinel.permissions.'.$access.'_form')->data(compact('mode','role','acl','user'))->title(ucfirst($access).' Permission');
+		return $this->view('admin.sentinel.permissions.'.$access.'_form')->data(compact('mode','role','acl','user','access'))->title(ucfirst($access).' Permission');
 	}
 
 	/**

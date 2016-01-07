@@ -8,7 +8,6 @@ use Input;
 use URL;
 use View;
 
-
 abstract class Controller extends BaseController {
 
 	use DispatchesCommands, ValidatesRequests;

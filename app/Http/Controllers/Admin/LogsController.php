@@ -2,8 +2,8 @@
 
 // Load Laravel classes
 use Route, Request, Session, Redirect, Input, Validator, View;
-// Load Sentinel and Socialite classes
-use Sentinel, Socialite;
+// Load Auth and Socialite classes
+use Auth;
 // Load other classes
 use App\Http\Controllers\Admin\BaseAdmin;
 // Load main models
@@ -32,8 +32,8 @@ class LogsController extends BaseAdmin {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin');
 
-		// Load roles and create model from Sentinel
-		$this->roles = Sentinel::getRoleRepository()->createModel();
+		// Load roles and create model from Auth
+		$this->roles = Auth::getRoleRepository()->createModel();
 		
 	}
 
@@ -209,7 +209,7 @@ class LogsController extends BaseAdmin {
 		
 		$role_access = config('setting.acl');
 		
-		$role = Sentinel::findRoleById($this->user->roles()->first()->id);
+		$role = Auth::findRoleById($this->user->roles()->first()->id);
 
 		//dd (array_keys($role_access));
 

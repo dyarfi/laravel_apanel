@@ -224,6 +224,7 @@ class TasksController extends BaseAdmin {
 
 		$rules = [
 			'name' 		   => 'required',
+			'slug' 		   => 'required',
 			'description'  => 'required',
 			'value'  	   => 'required',
 			'status'	   => 'boolean'

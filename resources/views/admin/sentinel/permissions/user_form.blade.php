@@ -3,8 +3,11 @@
 {{-- Page content --}}
 @section('body')
 
-<div class="container-fluid">
-    <h3>{{ $user->name }}</h3>
+<div class="container-fluid">    
+    @if ($user->username)
+    <h4 class="red">Username</h4>
+    <ul class="list-unstyled"><li>{{ $user->username }}</li></ul>
+    @endif
     <h4 class="red">Email</h4>
     <ul class="list-unstyled"><li>{{ $user->email }}</li></ul>
     <h4 class="red">Roles</h4>

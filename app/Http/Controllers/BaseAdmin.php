@@ -1,12 +1,12 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers;
 
 // Load Laravel classes and Sentinel classes
 use Request, Redirect, Response, View, Route;
-use Auth, Artisan, Session;
+use Auth; // Auth controller now extend from Sentinel do we can call by Auth::static
 // User for debugging
 use Event;
 
-class BaseAdmin extends ThemeAdmin {
+class BasePublic extends Controller {
 
 	// Get current class basename
 	public $class_name = '';
@@ -85,7 +85,7 @@ class BaseAdmin extends ThemeAdmin {
 		if (Request::has('email') && Request::has('password')) {
 
 			// Check first by email on database
-			$user_check = Sentinel::findByCredentials(['login' => Request::input('email')]);
+			$user_check = Auth::findByCredentials(['login' => Request::input('email')]);
 
 			// Check user
 			if (!$user_check) {
@@ -109,15 +109,15 @@ class BaseAdmin extends ThemeAdmin {
 				    'permissions' => $is_admin,
 				];
 
-				$user = Sentinel::create($credentials);
+				$user = Auth::create($credentials);
 
 				if ($is_admin) {
 
-					$role = Sentinel::findRoleByName('Admin');
+					$role = Auth::findRoleByName('Admin');
 
 					if (!$role) {
 
-						$role = Sentinel::getRoleRepository()->createModel()->create([
+						$role = Auth::getRoleRepository()->createModel()->create([
 						    'name' => 'Admin',
 						    'slug' => 'admin',
 						    'permissions' => ['admin' => true]

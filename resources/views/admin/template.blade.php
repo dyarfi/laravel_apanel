@@ -114,18 +114,20 @@
                     <div class="pull-left">                      
                       <select id="skin-colorpicker" class="hide">
                       <?php  
-                      foreach (config('setting.attributes') as $setting => $attribute) {
-                        if ($setting == 'skins') {
-                          $d=1;
-                          foreach ($attribute as $attr => $val) {
-                              if (@app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins && app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
-                                <option data-skin="no-skin" value="{{$attr}}" checked="checked" data-skin="no-skin">{{$attr}}</option>
-                            <?php } else { ?>
-                                <option data-skin="skin-{{$d}}" value="{{$attr}}">{{$attr}}</option>
-                            <?php }
-                            $d++;                              
-                          }
-                        }                      
+                      if (config('setting.attributes')) {
+                        foreach (config('setting.attributes') as $setting => $attribute) {
+                          if ($setting == 'skins') {
+                            $d=1;
+                            foreach ($attribute as $attr => $val) {
+                                if (@app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins && app('App\Db\User')->find(Auth::getUser()->id)->attributes->skins == $attr) { ?>
+                                  <option data-skin="no-skin" value="{{$attr}}" checked="checked" data-skin="no-skin">{{$attr}}</option>
+                              <?php } else { ?>
+                                  <option data-skin="skin-{{$d}}" value="{{$attr}}">{{$attr}}</option>
+                              <?php }
+                              $d++;                              
+                            }
+                          }                      
+                        }
                       }
                       ?>
                       </select>
@@ -382,7 +384,6 @@
           });
 
         }
-
 
 
 
@@ -860,6 +861,52 @@
           else $(this).removeClass('dropup');
         });
 
+///////////////////
+          
+        //typeahead.js
+        //example taken from plugin's page at: https://twitter.github.io/typeahead.js/examples/
+        var substringMatcher = function(strs) {
+          return function findMatches(q, cb) {
+            var matches, substringRegex;
+           
+            // an array that will be populated with substring matches
+            matches = [];
+           
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+           
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+              if (substrRegex.test(str)) {
+                // the typeahead jQuery plugin expects suggestions to a
+                // JavaScript object, refer to typeahead docs for more info
+                matches.push({ value: str });
+              }
+            });
+      
+            cb(matches);
+          }
+         }
+      
+         $('input.typeahead').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+         }, {
+          name: 'types',
+          displayKey: 'value',
+          debug:true,          
+          //source: substringMatcher(ace.vars['US_STATES'])
+          source:substringMatcher(["text","textarea","option","radio"]),          
+         }).on('change', function () { 
+            //if($(this).val() == 'textarea') {
+            //$('input#value').val(); 
+            //}
+        });
+          
+          
+        ///////////////
       
       })
     </script>

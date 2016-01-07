@@ -65,18 +65,42 @@
 			<div class="form-group">
 				<div class="col-md-12">
 				<span class="clearfix">Skins :</span>
-				@foreach (config('setting.attributes') as $setting => $attribute)
-					@if ($setting == 'skins')
-						@foreach ($attribute as $attr => $val)	
-							<div class="col-md-2">
-								<div class="pull-left" style="background-color:{{ $attr }}">
-									{!! Form::label('attributes[skins]', $attr, ['class' => 'control-label white']) !!}									
-									{!! Form::radio('attributes[skins]', $attr, ($user->attributes->skins === $attr ? true : false)) !!}		
-								</div>						
-							</div>
-						@endforeach
-					@endif
-				@endforeach
+				@if(config('setting.attributes'))
+					@foreach (config('setting.attributes') as $setting => $attribute)
+						@if ($setting == 'skins')
+							@foreach ($attribute as $attr => $val)	
+								<div class="col-md-2">
+									<div class="pull-left" style="background-color:{{ $attr }}">
+										{!! Form::label('attributes[skins]', $attr, ['class' => 'control-label white']) !!}									
+										{!! Form::radio('attributes[skins]', $attr, ($user->attributes->skins === $attr ? true : false)) !!}		
+									</div>						
+								</div>
+							@endforeach
+						@endif
+					@endforeach
+				@endif
+				</div>
+			</div>
+			
+			<div class="clearfix space-6"></div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+				<span class="clearfix">Skins :</span>
+				@if(config('setting.attributes'))
+					@foreach (config('setting.attributes') as $setting => $attribute)
+						@if ($setting == 'skins')
+							@foreach ($attribute as $attr => $val)	
+								<div class="col-md-2">
+									<div class="pull-left" style="background-color:{{ $attr }}">
+										{!! Form::label('attributes[skins]', $attr, ['class' => 'control-label white']) !!}									
+										{!! Form::radio('attributes[skins]', $attr, ($user->attributes->skins === $attr ? true : false)) !!}		
+									</div>						
+								</div>
+							@endforeach
+						@endif
+					@endforeach
+				@endif
 				</div>
 			</div>
 			

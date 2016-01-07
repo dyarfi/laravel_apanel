@@ -2,7 +2,7 @@
 
 @section('body')
 <div class="container-fluid">
-    <h4 class="red">Name</h4>
+    <h4 class="red">Role Name</h4>
     <div>{{ $role->name }}</div>
     <h4 class="red">Access Rights</h4>
     <ul class="list-unstyled">

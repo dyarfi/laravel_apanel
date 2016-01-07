@@ -35,16 +35,14 @@
 		<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
 	</div>
 
-	<div class="form-group{{ $errors->first('description', ' has-error') }}">
-		{!! Form::label('description', 'Description'); !!}
-		{!! Form::textarea('description',Input::old('description', $setting->description),[
-			'placeholder'=>'Enter the Setting Description.',
-			'name'=>'description',
-			'id'=>'description',
-			'class' => 'form-control',
-			'rows' => '4'
-		]); !!}
-		<span class="help-block">{{{ $errors->first('description', ':message') }}}</span>
+	<div class="form-group{{ $errors->first('input_type', ' has-error') }}">
+		{!! Form::label('input_type', 'Input Type'); !!}
+		{!! Form::text('input_type',Input::old('input_type', $setting->input_type),[
+			'placeholder'=>'Enter the Setting Input type.',
+			'name'=>'input_type',
+			'id'=>'input_type',
+			'class'=>'form-control typeahead']); !!}
+		<span class="help-block">{{{ $errors->first('input_type', ':message') }}}</span>
 	</div>
 
 	<div class="form-group{{ $errors->first('value', ' has-error') }}">
@@ -55,6 +53,18 @@
 			'id'=>'value',
 			'class' => 'form-control']); !!}
 		<span class="help-block">{{{ $errors->first('value', ':message') }}}</span>
+	</div>
+	
+	<div class="form-group{{ $errors->first('description', ' has-error') }}">
+		{!! Form::label('description', 'Description'); !!}
+		{!! Form::textarea('description',Input::old('description', $setting->description),[
+			'placeholder'=>'Enter the Setting Description.',
+			'name'=>'description',
+			'id'=>'description',
+			'class' => 'form-control',
+			'rows' => '4'
+		]); !!}
+		<span class="help-block">{{{ $errors->first('description', ':message') }}}</span>
 	</div>
 
 	<div class="form-group{{ $errors->first('help_text', ' has-error') }}">

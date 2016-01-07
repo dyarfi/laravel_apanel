@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 // Load Laravel classes
-use Route, Request, Session, Redirect, Sentinel, Activation, Socialite, Input, Validator, View, Auth;
+use Route, Request, Session, Redirect, Activation, Auth, Input, Validator, View;
 // Load main models
 use App\Db\Role, App\Db\User;
 
@@ -28,7 +28,7 @@ class UsersController extends BaseAdmin {
 		// Load Http/Middleware/Admin controller
 		$this->middleware('auth.admin',['except'=>'profile']);
 
-		// Load users and get repository data from Sentinel
+		// Load users and get repository data from Auth
 		$this->users = new User;
 
 		$this->roles = new Role;
@@ -73,7 +73,7 @@ class UsersController extends BaseAdmin {
 	public function profile() {
 
 		// Set return data 
-	   	$user = Sentinel::getUser() ? User::find(Sentinel::getUser()->id) : '';
+	   	$user = Auth::getUser() ? User::find(Auth::getUser()->id) : '';
 	   	
 	   	// Set data to return
 	   	$data = ['user'=>$user];
@@ -231,7 +231,7 @@ class UsersController extends BaseAdmin {
 		}
 		else
 		{
-			$user = Sentinel::getUserRepository()->createModel();
+			$user = Auth::getUserRepository()->createModel();
 		}
 
 		$roles = $this->roles->lists('name', 'id');
@@ -273,7 +273,7 @@ class UsersController extends BaseAdmin {
 
 			}
 
-			$user = Sentinel::getUserRepository()->createModel()->find($id);
+			$user = Auth::getUserRepository()->createModel()->find($id);
 
 			$rules['email'] .= ",email,{$user->email},email";
 
@@ -304,7 +304,7 @@ class UsersController extends BaseAdmin {
 					} else {
 						
 						// Update user model data
-						Sentinel::getUserRepository()->update($user, $input);
+						Auth::getUserRepository()->update($user, $input);
 
 					}
 
@@ -320,7 +320,7 @@ class UsersController extends BaseAdmin {
 			if ($messages->isEmpty())
 			{
 				// Create user into the database
-				$user = Sentinel::getUserRepository()->create($input);
+				$user = Auth::getUserRepository()->create($input);
 				
 				// Syncing relationship Many To Many // Create New
 				$user->roles()->sync(['role_id'=>$input['role_id']]);

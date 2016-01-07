@@ -67,7 +67,7 @@ class SettingsController extends BaseAdmin {
 	public function index() {
 
 		// Set return data 
-	   	$settings = Input::get('path') === 'trashed' ? $this->settings->onlyTrashed()->get() : $this->settings->get();
+	   	$settings = Input::get('path') === 'trashed' ? $this->settings->onlyTrashed()->orderBy('name')->get() : $this->settings->orderBy('name')->get();
 
 	   	// Get deleted count
 		$deleted = $this->settings->onlyTrashed()->get()->count();		   
@@ -80,7 +80,8 @@ class SettingsController extends BaseAdmin {
 	   				'dataTables'=> 'assets.admin/js/jquery.dataTables.min.js',
 	   				'dataTableBootstrap'=> 'assets.admin/js/jquery.dataTables.bootstrap.min.js',
 	   				'dataTableTools'=> 'assets.admin/js/dataTables.tableTools.min.js',
-	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js'
+	   				'dataTablesColVis'=> 'assets.admin/js/dataTables.colVis.min.js',
+	   				'typehead.jquery'=> 'assets.assets/js/typeahead.jquery.min.js'
 	   				];
 	   	
 		// Return data and view
@@ -232,7 +233,10 @@ class SettingsController extends BaseAdmin {
 			$setting = $this->settings;
 		}
 
-		return $this->view('admin.sentinel.settings.form')->data(compact('mode', 'setting'))->title('Setting '.$mode);
+	   	// Load needed scripts
+	   	$scripts = ['typehead.jquery'=> 'assets.admin/js/typeahead.jquery.min.js'];
+
+		return $this->view('admin.sentinel.settings.form')->data(compact('mode', 'setting'))->scripts($scripts)->title('Setting '.$mode);
 	}
 
 	/**
@@ -249,6 +253,7 @@ class SettingsController extends BaseAdmin {
 
 		$rules = [
 			'name' 		   => 'required',
+			'slug' 		   => 'required',
 			'description'  => 'required',
 			'value'  	   => 'required',
 			'status'	   => 'boolean'

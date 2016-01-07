@@ -1,11 +1,10 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+//use App\Http\Requests;
+//use App\Http\Controllers\Controller;
+//use Illuminate\Http\Request;
 
-use Illuminate\Http\Request;
-
-class PagesController extends Controller {
+class PagesController extends BasePublic {
 
 
 	//public $restful = true;
@@ -17,11 +16,16 @@ class PagesController extends Controller {
 	 */
 	public function __construct()
 	{
+		// Parent constructor
+		parent::__construct();
+
 		//$this->middleware('auth');
+
+		//dd(Auth::inRole('admin'));
 	}
 	
 	public function home()
-	{
+	{	
 
 	    return $this->view('pages.home')->title('Home - Laravel Tasks');
 	}
