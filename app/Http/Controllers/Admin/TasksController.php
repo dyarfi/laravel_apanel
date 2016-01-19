@@ -258,7 +258,7 @@ class TasksController extends BaseAdmin {
 			      // sending back with error message.
 			      // Session::flash('error', 'uploaded file is not valid');
 			      // return Redirect::to('tasks/'.$id.'/edit');
-		    	  $fileName = old('image');
+		    	  $fileName = old('image') ? old('image') : $task->image;
 		    }
 
 			if ($messages->isEmpty())
@@ -266,6 +266,9 @@ class TasksController extends BaseAdmin {
 				// Get all request
 				$result = $input;	
 				
+				// Set user id
+				$result['user_id'] = Auth::getUser()->id;
+
 				// Slip image file
 				$result = array_set($result, 'image', $fileName);
 
@@ -297,6 +300,9 @@ class TasksController extends BaseAdmin {
 			{
 				// Get all request
 				$result = $input;	
+
+				// Set user id
+				$result['user_id'] = Auth::getUser()->id;
 
 				// Slip image file
 				$result = is_array($result['image']) ? array_set($result, 'image', '') : array_set($result, 'image', $fileName);

@@ -24,7 +24,8 @@ class Task extends Model {
         'title',
         'slug',
         'description',
-        'image'
+        'image',
+        'user_id'
     ];
 
     // Instead, a deleted_at timestamp is set on the record.
