@@ -218,15 +218,22 @@ class TasksController extends BaseAdmin {
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	protected function processForm($mode, $id = null)
-	{
-		$input = array_filter(Input::all());
-		//$input['slug'] = isset($input['name']) ? snake_case($input['name']) : '';
+	{	
+		//$request = new Request;
 
+		$input = array_filter(Input::all());
+		//$input = $request;
+		//print_r($input);
+		//exit;
+		//$input['slug'] = isset($input['title']) ? snake_case($input['title']) : '';
+
+		//$request = $input;		
+		
 		$rules = [
-			'name' 		   => 'required',
+			'title' 	   => 'required',
 			'slug' 		   => 'required',
 			'description'  => 'required',
-			'value'  	   => 'required',
+			//'value'  	   => 'required',
 			'status'	   => 'boolean'
 		];
 
@@ -236,19 +243,67 @@ class TasksController extends BaseAdmin {
 
 			$messages = $this->validateTask($input, $rules);
 
+			// checking file is valid.
+		    //if ($request->file('image') && $request->file('image')->isValid()) {
+			if (!empty($input['image']) && !$input['image']->getError()) {
+		      $destinationPath = public_path().'/uploads'; // upload path
+		      $extension = $input['image']->getClientOriginalExtension(); // getting image extension
+		      $fileName = rand(11111,99999).'.'.$extension; // renameing image
+		      $input['image']->move($destinationPath, $fileName); // uploading file to given path
+		      // sending back with message
+		      //Session::flash('success', 'Upload successfully'); 
+		      //return Redirect::to(route('admin.tasks.create'));
+		    }
+		    else {
+			      // sending back with error message.
+			      // Session::flash('error', 'uploaded file is not valid');
+			      // return Redirect::to('tasks/'.$id.'/edit');
+		    	  $fileName = old('image');
+		    }
+
 			if ($messages->isEmpty())
 			{
-				$task->update($input);
+				// Get all request
+				$result = $input;	
+				
+				// Slip image file
+				$result = array_set($result, 'image', $fileName);
+
+				$task->update($result);
+				//$task->update($input);
 			}
 
 		}
 		else
 		{
 			$messages = $this->validateTask($input, $rules);
+			// checking file is valid.
+		    if (!empty($input['image']) && !$input['image']->getError()) {
+		      $destinationPath = public_path().'/uploads'; // upload path
+		      $extension = $input['image']->getClientOriginalExtension(); // getting image extension
+		      $fileName = rand(11111,99999).'.'.$extension; // renameing image
+		      $input['image']->move($destinationPath, $fileName); // uploading file to given path
+		      // sending back with message
+		      //Session::flash('success', 'Upload successfully'); 
+		      //return Redirect::to(route('admin.tasks.create'));
+		    }
+		    else {
+		      // sending back with error message.
+		      Session::flash('error', 'uploaded file is not valid');
+		      return Redirect::to(route('admin.tasks.create'));
+		    }
 
 			if ($messages->isEmpty())
 			{
-				$task = $this->tasks->create($input);
+				// Get all request
+				$result = $input;	
+
+				// Slip image file
+				$result = is_array($result['image']) ? array_set($result, 'image', '') : array_set($result, 'image', $fileName);
+
+				//$task = $this->tasks->create($input);
+				$task = $this->tasks->create($result);
+				
 			}
 		}
 

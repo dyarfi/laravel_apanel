@@ -90,8 +90,8 @@ class TasksController extends BasePublic {
 			      $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
 			      $uploaded = 1;
 			      // sending back with message
-			      //Session::flash('success', 'Upload successfully'); 
-			      //return Redirect::to('tasks/create');
+			      // Session::flash('success', 'Upload successfully'); 
+			      // return Redirect::to('tasks/create');
 		    } else {
 			      // sending back with error message.
 			      Session::flash('error', 'uploaded file is not valid');

@@ -14,7 +14,7 @@
 	]) 
 !!}
 
-<div class="form-group{{ $errors->first('name', ' has-error') }}">
+<div class="form-group{{ $errors->first('title', ' has-error') }}">
 	{!! Form::label('title', 'Title'); !!}
 	{!! Form::text('title',Input::old('title', $task->title),[
 		'placeholder'=>'Enter the Task title.',
@@ -47,12 +47,15 @@
 	<span class="help-block">{{{ $errors->first('description', ':message') }}}</span>
 </div>
 
-<div class="form-group">
-	{!! Form::label('image', 'Image:', ['class' => 'control-label']) !!}
+<div class="form-group">	
+	{!! Form::label('image', ($task->image) ? 'Replace Image:' : 'Image:', ['class' => 'control-label']) !!}
+	@if ($task->image)
+		{{$task->image}}
+	@endif
 	{!! Form::file('image') !!}
 </div>
 
-{!! Form::submit('Create New Task', ['class' => 'btn btn-primary btn-xs']) !!}
+{!! Form::submit(ucfirst($mode).' New Task', ['class' => 'btn btn-primary btn-xs']) !!}
 
 {!! Form::close() !!}
 

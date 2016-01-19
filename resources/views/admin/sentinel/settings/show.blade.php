@@ -20,9 +20,9 @@
     <div class="col-md-6 text-right">
         {!! Form::open([
             'method' => 'DELETE',
-            'route' => ['admin.settings.delete', $setting->id]
+            'route' => ['admin.settings.trash', $setting->id]
         ]) !!}
-            {!! Form::submit('Delete this user?', ['class' => 'btn btn-danger btn-xs']) !!}
+            {!! Form::submit('Delete this setting?', ['class' => 'btn btn-danger btn-xs']) !!}
         {!! Form::close() !!}
     </div>
 </div>
