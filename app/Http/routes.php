@@ -198,6 +198,17 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('tasks/{id}/restored', ['as'=>'admin.tasks.restored','uses'=>'Admin\TasksController@restored']);
     Route::get('tasks/{id}/delete', ['as'=>'admin.tasks.delete','uses'=>'Admin\TasksController@delete']);
 
+    // Careers Controller routes
+    Route::get('careers', ['as'=>'admin.careers.index','uses'=>'Admin\CareersController@index']);
+    Route::get('careers/create', ['as'=>'admin.careers.create','uses'=>'Admin\CareersController@create']);
+    Route::post('careers/create', ['as'=>'admin.careers.store','uses'=>'Admin\CareersController@store']);
+    Route::get('careers/{id}/show', ['as'=>'admin.careers.show', 'uses'=>'Admin\CareersController@show']);
+    Route::get('careers/{id}', ['as'=>'admin.careers.edit','uses'=>'Admin\CareersController@edit']);
+    Route::post('careers/{id}', ['as'=>'admin.careers.update','uses'=>'Admin\CareersController@update']);
+    Route::get('careers/{id}/trash', ['as'=>'admin.careers.trash','uses'=>'Admin\CareersController@trash']);    
+    Route::get('careers/{id}/restored', ['as'=>'admin.careers.restored','uses'=>'Admin\CareersController@restored']);
+    Route::get('careers/{id}/delete', ['as'=>'admin.careers.delete','uses'=>'Admin\CareersController@delete']);
+
     // Participants Controller routes
     Route::get('participants', ['as'=>'admin.participants.index','uses'=>'Admin\ParticipantsController@index']);
     Route::get('participants/create', ['as'=>'admin.participants.create','uses'=>'Admin\ParticipantsController@create']);

@@ -109,6 +109,18 @@ return [
 						]
 					]
 				],
+				// Career modules will be in the Admin directory in Http
+				['Career' => [
+						//------ Tasks controller
+						['Careers' => [
+								// Action for first index
+								'action' => ['careers.index'],
+								// Controller method list
+								'method' => ['careers.index','careers.edit','careers.update','careers.create','careers.store','careers.trash','careers.delete','careers.restored','careers.show']
+							]
+						]
+					]
+				],	
 				// Participant modules will be in the Admin directory in Http
 				['Participant' => [
 						//------ Tasks controller
