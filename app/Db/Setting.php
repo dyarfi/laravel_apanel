@@ -21,6 +21,8 @@ class Setting extends Model {
      * @var array
      */
     protected $fillable = [
+        'group',
+        'key',
         'name',
         'slug',  
         'description',

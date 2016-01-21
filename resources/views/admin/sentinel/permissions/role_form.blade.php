@@ -34,30 +34,30 @@
                         <h4 class="row green">{{ $access }}</h4>
                         <div class="control-group"> 
                             <div class="form-group">   
-                                    <?php 
-                                    // Set default variable checking
-                                    $is_admin = true; // Set this to false if we want to set superadmin disallowed to change admin permissions
-                                    $readonly = '';
-                                    $message  = '';                                             
-                                    // Check current user if they are admin or not
-                                    if( !Auth::inRole('admin') ) {
-                                        $is_admin = false;
-                                    }
-                                    // Check if main module is passed
-                                    if ($access == 'Admin') {
-                                        $readonly   = $is_admin ? '' : ' disabled';
-                                        $message    = '&nbsp;<small class="btn btn-success btn-xs disabled"><i class="ace-icon fa fa-exclamation-triangle"></i> SUPERADMIN ONLY</small>';
-                                    }   
-                                    ?>  
-                                    @if (isset($role->permissions[$_access]) && array_get($role->permissions, $_access) == 1)
-                                        <input type="checkbox" class="checked" id="role_permission[{{$_access}}]" name="role_permission[{{$_access}}]" checked value="true" {{ $readonly }} />
-                                        @if ($readonly)
-                                            <input type="hidden" value="true" name="role_permission[{{$_access}}]"/>
-                                        @endif
-                                    @else
-                                        <input type="checkbox" class="checked" id="role_permission[{{$_access}}]" name="role_permission[{{$_access}}]" value="false" {{ $readonly }} />
+                                <?php 
+                                // Set default variable checking
+                                $is_admin = true; // Set this to false if we want to set superadmin disallowed to change admin permissions
+                                $readonly = '';
+                                $message  = '';                                             
+                                // Check current user if they are admin or not
+                                if( !Auth::inRole('admin') ) {
+                                    $is_admin = false;
+                                }
+                                // Check if main module is passed
+                                if ($access == 'Admin') {
+                                    $readonly   = $is_admin ? '' : ' disabled';
+                                    $message    = '&nbsp;<small class="btn btn-success btn-xs disabled"><i class="ace-icon fa fa-exclamation-triangle"></i> SUPERADMIN ONLY</small>';
+                                }   
+                                ?>  
+                                @if (isset($role->permissions[$_access]) && array_get($role->permissions, $_access) == 1)
+                                    <input type="checkbox" class="checked" id="role_permission[{{$_access}}]" name="role_permission[{{$_access}}]" checked value="true" {{ $readonly }} />
+                                    @if ($readonly)
+                                        <input type="hidden" value="true" name="role_permission[{{$_access}}]"/>
                                     @endif
-                                    <label for="role_permission[{{$_access}}]">{{ ucwords(str_replace('.',' ',$_access)) }}</label>                            
+                                @else
+                                    <input type="checkbox" class="checked" id="role_permission[{{$_access}}]" name="role_permission[{{$_access}}]" value="false" {{ $readonly }} />
+                                @endif
+                                <label for="role_permission[{{$_access}}]">{{ ucwords(str_replace('.',' ',$_access)) }}</label>                            
                             </div>
                         </div>                    
                     </li>
