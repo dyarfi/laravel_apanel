@@ -44,7 +44,7 @@ class Setting extends Model {
      * @var array
      */
     protected $casts = [
-        'editable'    => 'boolean',
+        //'editable'    => 'boolean',
         'attributes'  => 'object',
         'status'      => 'boolean'
 
@@ -54,6 +54,20 @@ class Setting extends Model {
     public function user()
     {
         return $this->belongsTo('App\Db\User','user_id','id');
+    }
+
+    public function setToConfig() {
+
+        return $this->all(['group','key','value','slug','name','description','input_type'])->groupBy('group');
+
+    }
+
+    public function scopeSlug($query, $string) {
+
+        //print_r($string);
+        //exit;
+        return $query->where('slug', $string);
+
     }
 
 }

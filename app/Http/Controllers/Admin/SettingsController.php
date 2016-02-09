@@ -66,6 +66,20 @@ class SettingsController extends BaseAdmin {
 	 */
 	public function index() {
 
+		//print_r($this->settings->setToConfig());
+		//exit;
+		//Config::set('setting.configure', $this->settings->setToConfig());
+		//print_r(Config::get('setting.configure'));
+		//exit;
+
+		//$arrays = array_dot($settings);
+
+		//foreach ($this->settings->setToConfig() as $key => $val) {
+			//print_r($key);
+			//$asdf = $array['group'];
+			//print_r($val['group']);
+		//}
+
 		// Set return data 
 	   	$settings = Input::get('path') === 'trashed' ? $this->settings->onlyTrashed()->orderBy('name')->get() : $this->settings->orderBy('name')->get();
 
@@ -73,7 +87,7 @@ class SettingsController extends BaseAdmin {
 		$deleted = $this->settings->onlyTrashed()->get()->count();		   
 		
 	   	// Set data to return
-	   	$data = ['settings' => $settings,'deleted' => $deleted,'junked' => Input::get('path')];
+	   	$data = ['settings' => $settings,'deleted' => $deleted,'junked' => Input::get('path'), 'config_settings' => $this->settings->setToConfig()];
 
 	   	// Load needed scripts
 	   	$scripts = [
@@ -261,6 +275,10 @@ class SettingsController extends BaseAdmin {
 
 		if ($id)
 		{
+			
+			//print_r($input);
+			//exit;
+
 			$setting = $this->settings->find($id);
 
 			$messages = $this->validateSetting($input, $rules);
@@ -303,6 +321,75 @@ class SettingsController extends BaseAdmin {
 		$validator->passes();
 
 		return $validator->errors();
+	}
+
+	/**
+	 * Change site setting.
+	 *
+	 * @param  array  $data
+	 * @param  mixed  $id
+	 * @return boolean
+	 */
+	public function change($id=null) {
+		
+		// Default all input variables
+		$input = Input::all();
+
+		// Default variable checking
+		$updated = false;	    
+
+		// Session checking variable
+		$session = base64_decode(Request::input('setting_form')) == Session::getId();
+
+		// POST Request Method Checking
+		if (Request::server('REQUEST_METHOD') === 'POST') {
+
+		    // Check if requested contain 'access_permission'
+			if (Request::has('setting_form') && $session) {
+				
+				// $setting = Setting::where('slug', 'site-theme')->update(['value'=>'bluesky']);
+				print_r($input['email-contact']);
+				exit;
+
+				foreach ($input as $value) {
+
+					//print_r(Setting::slug($input)->get());
+
+				}
+
+				exit;		
+
+				// Saved checking
+				$updated = true;
+
+			} else {
+
+				// Saved checking
+				$updated = false;
+
+			}
+
+		} else {
+			
+			// Return response Unauthorized
+			return response()->json(['status'=>'200','message'=>'Unauthorized!']);
+
+		}
+
+
+		if ($updated) {
+
+			// Return response successfull
+			return response()->json(['status'=>'200','message'=>'Update Successfull!']);			
+
+		} else {
+
+			// Return response failed
+			return response()->json(['status'=>'200','message'=>'Update Failed!']);
+
+		}
+
+
 	}
 
 

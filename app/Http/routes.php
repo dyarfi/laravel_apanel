@@ -147,6 +147,8 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('settings/{id}/trash', ['as'=>'admin.settings.trash','uses'=>'Admin\SettingsController@trash']);
     Route::get('settings/{id}/restored', ['as'=>'admin.settings.restored','uses'=>'Admin\SettingsController@restored']);
     Route::get('settings/{id}/delete', ['as'=>'admin.settings.delete','uses'=>'Admin\SettingsController@delete']);
+    // Ajax Controller
+    Route::post('settings/{id}/change', ['as'=>'admin.settings.change','uses'=>'Admin\SettingsController@change']);
     
     // Logs Controller routes
     Route::get('logs', ['as'=>'admin.logs.index','uses'=>'Admin\LogsController@index']);

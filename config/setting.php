@@ -64,7 +64,7 @@ return [
 								// Action for first index
 								'action' => ['settings.index'],						
 								// Controller method list
-								'method' => ['settings.index','settings.edit','settings.update','settings.create','settings.store','settings.trash','settings.delete','settings.restored','settings.show']
+								'method' => ['settings.index','settings.edit','settings.update','settings.create','settings.store','settings.trash','settings.delete','settings.restored','settings.show','settings.change']
 							]
 						],
 						//------ Admin logs controller
@@ -170,5 +170,7 @@ return [
 		[
 			'Active' => 1,
 			'Inactive' => 0
-		]
+		],
+
+	'configure'	=> []
 ];

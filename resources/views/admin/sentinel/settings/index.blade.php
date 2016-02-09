@@ -2,7 +2,13 @@
 
 {{-- Page content --}}
 @section('body')
-
+<div class="page-header">
+	<h1>Settings 
+		@if(Auth::getUser()->roles[0]->slug == 'admin')
+		<span class="pull-right"><a href="{{ route('admin.settings.create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}
+		@endif
+	</h1>
+</div>
 <?php /*
 <div class="page-header">
 	<h1>Settings <span class="pull-right"><a href="{{ route('admin.settings.create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
@@ -95,22 +101,85 @@
 </div>
 @else
 <br><br>
-<div class="well">
-	Nothing to show here.
-</div>
+<div class="well">Nothing to show here.</div>
 @endif
 */
 ?>
 <!-- PAGE CONTENT BEGINS -->
 <div class="row">
 	<div class="col-sm-12">
-		{!! Form::open(['route'=>'admin.settings.index']) !!}
-		<?php
-		$arrays = array_dot($settings);
-		foreach ($arrays as $array) {
-			print_r($array['group']);
-		}
-		?>
+		{!! Form::open(['route'=>'admin.settings.change','files' => true]) !!}
+		{!! Form::hidden('setting_form',base64_encode(Session::getId())) !!}
+		<div class="tabbable">
+			<ul class="nav nav-tabs" id="myTab">
+				<?php
+				$i = 0; 
+				foreach ($config_settings as $key => $val) { ?>
+					<li <?php if ($i == 0) echo 'class="active"';?>>
+						<a data-toggle="tab" href="#{{$key}}">
+							<!-- <i class="green ace-icon fa fa-home bigger-120"></i> -->
+							{{ucfirst($key)}}
+						</a>
+					</li>
+					<?php
+				$i++;
+				}
+				?>
+			</ul>
+			<div class="tab-content">
+				<?php
+				$j = 0;
+				foreach ($config_settings as $key => $val) { ?>					
+					<div id="{{$key}}" class="tab-pane fade <?php if($j == 0) { echo 'in active'; } ?>">
+						<?php
+						foreach ($val as $setting) {
+							if($key == $key) { ?>
+								<div class="form-group{{ $errors->first($setting->slug, 'has-error') }}">
+									{!! Form::label($setting->slug, $setting->name); !!}
+									@if ($setting->description)
+										<small class="text-warning"><span class="fa fa-cog"></span>&nbsp;{{$setting->description}}</small>
+									@endif
+									@if ($setting['input_type'] == 'text')
+									{!! Form::text($setting->slug,Input::old($setting->value, $setting->value),[
+										'placeholder'=>'Enter the '.$setting->name,
+										'name'=> $setting->slug,
+										'id'=> $setting->slug,										
+										'class'=>'form-control'
+										]); !!}
+									@endif	
+									@if ($setting['input_type'] == 'textarea')
+									{!! Form::textarea($setting->slug,Input::old($setting->value, $setting->value),[
+										'placeholder'=>'Enter the '.$setting->name,
+										'name'=> $setting->slug,
+										'id'=> $setting->slug,										
+										'class'=>'form-control'
+										]); !!}
+									@endif
+									@if ($setting['input_type'] == 'file')
+										@if ($setting->value)
+											<span class="help-block">Replace File ? {!! $setting->value !!}</span>
+										@endif
+										{!! Form::file('image',[
+										'placeholder'=>'Enter the '.$setting->name,
+										'name'=> $setting->slug,
+										'id'=> $setting->slug,										
+										'class'=>'form-control input-sm'
+										]) !!}
+									@endif
+									<span class="help-block">{{{ $errors->first($setting->slug, ':message') }}}</span>
+								</div>
+							<?php
+							}
+						}
+						?>					
+					</div>
+				<?php 
+				$j++;
+				}
+				?>	
+			</div>
+		</div>
+		<?php /*
 		<div class="tabbable">
 			<ul class="nav nav-tabs" id="myTab">
 				<li class="active">
@@ -135,7 +204,6 @@
 						<li>
 							<a data-toggle="tab" href="#dropdown1">@fat</a>
 						</li>
-
 						<li>
 							<a data-toggle="tab" href="#dropdown2">@mdo</a>
 						</li>
@@ -157,6 +225,11 @@
 					<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>
 				</div>
 			</div>
+		</div>
+		*/
+		?>
+		<div class="form-group">
+			{!! Form::submit('Save Setting', ['class' => 'btn btn-primary btn-xs']) !!}
 		</div>
 		{!! Form::close() !!}
 	</div><!-- /.col -->
