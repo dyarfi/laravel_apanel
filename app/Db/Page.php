@@ -36,4 +36,11 @@ class Page extends Model {
         //return $this->belongsToMany('App\Db\User','role_users', 'role_id', 'user_id');
     }
 
+    // Scope query for slug field
+    public function scopeSlug($query, $string) {
+
+        return $query->where('slug', $string)->firstOrFail();
+
+    }
+
 }

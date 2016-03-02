@@ -66,6 +66,10 @@ class SettingsController extends BaseAdmin {
 	 */
 	public function index() {
 
+
+		// print_r(Setting::slug('site-theme')->firstOrFail()->value);
+		
+
 		//print_r($this->settings->setToConfig());
 		//exit;
 		//Config::set('setting.configure', $this->settings->setToConfig());
@@ -330,8 +334,8 @@ class SettingsController extends BaseAdmin {
 	 * @param  mixed  $id
 	 * @return boolean
 	 */
-	public function change($id=null) {
-		
+	public function change($id=null) {		
+
 		// Default all input variables
 		$input = Input::all();
 

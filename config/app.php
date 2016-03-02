@@ -154,6 +154,11 @@ return [
 		 */
 		'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
 
+		/*
+		 * Administrtor https://github.com/FrozenNode/Laravel-Administrator
+		 */
+		'Frozennode\Administrator\AdministratorServiceProvider'
+
 	],
 
 	/*

@@ -48,4 +48,11 @@ class Task extends Model {
         return $this->belongsTo('App\Db\User','user_id','id');
     }
 
+    // Scope query for slug field
+    public function scopeSlug($query, $string) {
+
+        return $query->where('slug', $string)->firstOrFail();
+
+    }
+
 }

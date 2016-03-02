@@ -29,7 +29,8 @@
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
         "Laravel\\Socialite\\SocialiteServiceProvider",
-        "Cartalyst\\Sentinel\\Laravel\\SentinelServiceProvider"
+        "Cartalyst\\Sentinel\\Laravel\\SentinelServiceProvider",
+        "Frozennode\\Administrator\\AdministratorServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -48,7 +49,8 @@
         "App\\Providers\\ConfigServiceProvider",
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
-        "Cartalyst\\Sentinel\\Laravel\\SentinelServiceProvider"
+        "Cartalyst\\Sentinel\\Laravel\\SentinelServiceProvider",
+        "Frozennode\\Administrator\\AdministratorServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

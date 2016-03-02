@@ -50,7 +50,7 @@ class Setting extends Model {
 
     ];
 
-    // a task is owned by a user
+    // A task is owned by a user
     public function user()
     {
         return $this->belongsTo('App\Db\User','user_id','id');
@@ -62,11 +62,10 @@ class Setting extends Model {
 
     }
 
+    // Scope query for slug field
     public function scopeSlug($query, $string) {
 
-        //print_r($string);
-        //exit;
-        return $query->where('slug', $string);
+        return $query->where('slug', $string)->firstOrFail();
 
     }
 
