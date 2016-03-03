@@ -431,8 +431,7 @@
         
           //initiate TableTools extension
           var tableTools_obj = new $.fn.dataTable.TableTools( oTable1, {
-            "sSwfPath": base_url +"/assets.admin/swf/copy_csv_xls_pdf.swf",
-            
+            //"sSwfPath": base_url +"/assets.admin/swf/copy_csv_xls_pdf.swf",            
             "sRowSelector": "td:not(:last-child)",
             "sRowSelect": "multi",
             "fnRowSelected": function(row) {
@@ -444,52 +443,24 @@
               //uncheck checkbox
               try { $(row).find('input[type=checkbox]').get(0).checked = false }
               catch(e) {}
-            },
-        
+            },      
             "sSelectedClass": "success",
-                "aButtons": [
-              {
-                "sExtends": "copy",
-                "sToolTip": "Copy to clipboard",
-                "sButtonClass": "btn btn-white btn-primary btn-bold",
-                "sButtonText": "<i class='fa fa-copy bigger-110 pink'></i>",
-                "fnComplete": function() {
-                  this.fnInfo( '<h3 class="no-margin-top smaller">Table copied</h3>\
-                    <p>Copied '+(oTable1.fnSettings().fnRecordsTotal())+' row(s) to the clipboard.</p>',
-                    1500
-                  );
-                }
-              },
-              
-              {
-                "sExtends": "csv",
-                "sToolTip": "Export to CSV",
-                "sButtonClass": "btn btn-white btn-primary  btn-bold",
-                "sButtonText": "<i class='fa fa-file-excel-o bigger-110 green'></i>"
-              },
-              
-              {
-                "sExtends": "pdf",
-                "sToolTip": "Export to PDF",
-                "sButtonClass": "btn btn-white btn-primary  btn-bold",
-                "sButtonText": "<i class='fa fa-file-pdf-o bigger-110 red'></i>"
-              },
-              
-              {
-                "sExtends": "print",
-                "sToolTip": "Print view",
-                "sButtonClass": "btn btn-white btn-primary  btn-bold",
-                "sButtonText": "<i class='fa fa-print bigger-110 grey'></i>",
-                
-                "sMessage": "<div class='navbar navbar-default'><div class='navbar-header pull-left'><a class='navbar-brand' href='#'><small>Optional Navbar &amp; Text</small></a></div></div>",
-                
-                "sInfo": "<h3 class='no-margin-top'>Print view</h3>\
-                      <p>Please use your browser's print function to\
-                      print this table.\
-                      <br />Press <b>escape</b> when finished.</p>",
-              }
+                "aButtons": [              
+                    {
+                      "sExtends": "print",
+                      "sToolTip": "Print view",
+                      "sButtonClass": "btn btn-white btn-primary  btn-bold",
+                      "sButtonText": "<i class='fa fa-print bigger-110 grey'></i>",
+                      
+                      "sMessage": "<div class='navbar navbar-default'><div class='navbar-header pull-left'><a class='navbar-brand' href='#'><small>Optional Navbar &amp; Text</small></a></div></div>",
+                      
+                      "sInfo": "<h3 class='no-margin-top'>Print view</h3>\
+                            <p>Please use your browser's print function to\
+                            print this table.\
+                            <br />Press <b>escape</b> when finished.</p>",
+                    }
                 ]
-            } );
+            });
           //we put a container before our table and append TableTools element to it
             $(tableTools_obj.fnContainer()).appendTo($('.tableTools-container'));
           
@@ -888,7 +859,7 @@
             cb(matches);
           }
          }
-      
+        /*
          $('input.typeahead').typeahead({
           hint: true,
           highlight: true,
@@ -904,8 +875,35 @@
             //$('input#value').val(); 
             //}
         });          
-          
+        */
         ///////////////
+
+
+        $('.btn-list').on('click',function(e) {
+          var listing = $(this).parent().find('.table-head');
+          e.preventDefault();
+
+          var l = $('#dynamic-table th').size() - 1;
+          var html = '';
+          $('#dynamic-table th').each(function(index) {
+            if (index < l && index != 0) {
+              html += '<li><a href="javascript:;">'+$( this ).text()+'</a></li>';
+            }
+          });
+
+          listing.html(html);
+
+        });
+
+        $('#dynamic-table').on('ready', function(e){
+            var columnNumber, rowNumber, headerText;
+            columnNumber = $(e.target).index() + 1;
+            rowNumber = $(e.target).parent().index() + 1;
+            headerText = $('th:nth-child(' + columnNumber + ')').text();
+            $('.columns').html(columnNumber);
+            $('.rows').html(rowNumber);
+            $('.headers').html(headerText);
+        });
       
       })
     </script>

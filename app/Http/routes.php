@@ -106,6 +106,8 @@ Route::group(['prefix' => $setting['admin_url']], function()
     Route::get('account', ['as'=>'users','uses'=>'Admin\UsersController@profile']);
     
     // User related routes
+    
+    Route::get('users/export', ['as'=>'admin.users.export','uses'=>'Admin\UsersController@export']);
     Route::get('users', ['as'=>'admin.users.index','uses'=>'Admin\UsersController@index']);
     Route::get('users/create', ['as'=>'admin.users.create', 'uses'=>'Admin\UsersController@create']);
     Route::post('users/create', ['as'=>'admin.users.store', 'uses'=>'Admin\UsersController@store']);

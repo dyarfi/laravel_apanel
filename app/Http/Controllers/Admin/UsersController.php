@@ -3,7 +3,7 @@
 // Load Laravel classes
 use Route, Request, Session, Redirect, Activation, Auth, Input, Validator, View;
 // Load main models
-use App\Db\Role, App\Db\User;
+use App\Db\Role, App\Db\User, Excel;
 
 class UsersController extends BaseAdmin {
 
@@ -382,6 +382,21 @@ class UsersController extends BaseAdmin {
 
 	   	// Return data and view
 	   	return $this->view('admin.sentinel.users.dashboard')->data($data)->scripts($scripts)->title('User Dashboard'); 
+	}
+
+	public function export() {
+
+		// Get type file to export
+		$type = Input::get('rel');
+		// Get data to export
+		$users = $this->users->select('id', 'username', 'email', 'created_at')->get();
+		// Export file to type
+		Excel::create('users', function($excel) use($users) {
+		    $excel->sheet('Sheet 1', function($sheet) use($users) {
+		        $sheet->fromArray($users);
+		    });
+		})->export($type);
+
 	}
 
 }

@@ -157,7 +157,12 @@ return [
 		/*
 		 * Administrtor https://github.com/FrozenNode/Laravel-Administrator
 		 */
-		'Frozennode\Administrator\AdministratorServiceProvider'
+		'Frozennode\Administrator\AdministratorServiceProvider',
+
+		/*
+		 * http://www.maatwebsite.nl/laravel-excel/docs/getting-started#installation
+		 */
+		'Maatwebsite\Excel\ExcelServiceProvider'
 
 	],
 
@@ -220,7 +225,9 @@ return [
 		'Reminder'        => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
 		'Sentinel'        => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',
 		 // Simple PHP API extension for DateTime. [http://carbon.nesbot.com](http://carbon.nesbot.com)
-		'Carbon'		 => 'Carbon\Carbon'
+		'Carbon'		 => 'Carbon\Carbon',
+		 // An eloquent way of importing and exporting Excel and CSV files
+		'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 		
 	],
 

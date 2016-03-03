@@ -6,6 +6,22 @@
 <div class="page-header">
 	<h1>Users <span class="pull-right"><a href="{{ route('admin.users.create') }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Create</a></span>{{$junked ? ' &raquo; Trashed' :''}}</h1>
 </div>
+<div class="row pull-left">
+	<div class="col-lg-12">
+		<div class="col-md-6 dropdown">
+			<button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			   <span class="fa fa-external-link-square"></span> Export
+	    	   <span class="caret"></span>
+		  	</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<li><a href="{{route('admin.users.export','rel=xls')}}" class=""><span class="fa fa-file-excel-o"></span> XLS</a></li>		
+				<li><a href="{{route('admin.users.export','rel=csv')}}" class=""><span class="fa fa-file-text-o"></span> CSV</a></li>				
+				<li><a href="{{route('admin.users.export','rel=pdf')}}" class=""><span class="fa fa-file-pdf-o"></span> PDF</a></li>
+			</ul>
+		</div>		
+	</div>
+</div>
+
 @if($deleted)
 <div class="pull-right">
 	<a href="{{route('admin.users.index','path=trashed')}}" title="Restored Deleted"><span class="fa fa-trash"></span> {{ $deleted }} Deleted</a>

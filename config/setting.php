@@ -40,7 +40,7 @@ return [
 								// Action for first index
 								'action' => ['users.index'],
 								// Controller method list
-								'method' => ['users.index','users.edit','users.update','users.create','users.trash','users.delete','users.restored','users.store','users.show','users.dashboard'],
+								'method' => ['users.index','users.edit','users.update','users.create','users.trash','users.delete','users.restored','users.store','users.show','users.export','users.dashboard'],
 							]
 						],
 						//------ Admin roles controller
